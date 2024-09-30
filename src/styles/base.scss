@@ -1,0 +1,50 @@
+@layer base {
+    :root {
+        --color-green: #0B532A;
+        --color-orage: #FADFBD;
+        --color-offwhite: #FEFEE3;
+        --color-white: white;
+
+        --font-title: "Playfair Display SC", serif;
+
+        --space-tiny: 0.5rem;
+        --space-base: 0.625rem;
+        --space-line: 1rem;
+        --space-small: 2rem;
+        --space-medium: 3rem;
+        --space-large: 5rem;
+        --space-extra-large: 8rem;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6, a, p {
+        font-family: var(--font-title);
+        font-weight: 400;
+        margin: 0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: uppercase;
+    }
+}
+
+@layer animations {
+    @keyframes move-up {
+        from {
+            transform: translateY(100%)
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+    @keyframes rotate-up {
+        from {
+            transform: rotateX(-30deg)
+        }
+        to {
+            transform: rotateX(0deg);
+        }
+    }
+}

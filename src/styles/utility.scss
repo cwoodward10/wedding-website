@@ -1,0 +1,16 @@
+@use '@styles/media.scss' as Media;
+
+@include Media.until('medium') {
+    .dk {
+        display: none;
+        content-visibility: hidden;
+        visibility: hidden;
+    }
+}
+@include Media.at('medium') {
+    .mb {
+        display: none;
+        content-visibility: hidden;
+        visibility: hidden;
+    }
+}
