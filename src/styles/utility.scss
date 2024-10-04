@@ -1,5 +1,9 @@
 @use '@styles/media.scss' as Media;
 
+.no-wrap {
+    white-space: nowrap;
+}
+
 @include Media.until('medium') {
     .dk {
         display: none;

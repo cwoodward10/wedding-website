@@ -9,31 +9,37 @@ import imageDesktop from '@assets/images/tennis-dk.jpg';
 const alt = "Natalie & Chris are getting married! 09/25";
 const seed = Math.ceil(Math.random() * 2);
 
-const title = "9/20/25";
-const sub = "Chicago, IL";
-
-const head1 = "<span>Natalie &</span>\n<span><span>Chris</span>";
-const head2 = "<span>Save</span>\n<span>the date</span>";
-
 ---
 
 <Layout>
-	<main>
-		<div class="image-container">
+	<main style="--animation-timing-function: ease-in-out">
+		<div class="image-container" style="--animation-delay: 100ms; --animation-duration: 500ms;">
 			{seed === 1 ?
 				<Image src={imageMobile1} alt={alt} class="mb one" /> :
 				<Image src={imageMobile2} alt={alt} class="mb two" />
 			}
-			<Image src={imageDesktop} alt={alt} class="dk" />
+			<Image src={imageDesktop} alt={alt} class="dk main" />
 		</div>
 
-		<section class="text-container">
-			<div class="center">
-				<h1>{title}</h1>
-				<p>{sub}</p>
+		<section class="text-container" style="--animation-delay: 1000ms;">
+			<div class="content">
+				<div class="center">
+					<h1>
+						9/20/25
+					</h1>
+					<p class="fade-in" style="--animation-duration: 2s; --animation-timing-function: ease-out;">
+						Chicago, IL
+					</p>
+				</div>
+				<h2 class="top fly-in" style="--animation-duration: 1s;">
+					<span class="no-wrap">Natalie &</span>
+					Chris
+				</h2>
+				<h2 class="bottom fly-in" style="--animation-duration: 1s;">
+					Save
+					<span class="no-wrap">The Date</span>
+				</h2>
 			</div>
-			<h2 class="top"><Fragment set:html={head1} /></h2>
-			<h2 class="bottom"><Fragment set:html={head2}/></h2>
 		</section>
 	</main>
 </Layout>
@@ -42,13 +48,25 @@ const head2 = "<span>Save</span>\n<span>the date</span>";
 	@use '@styles/media.scss' as Media;
 
 	main {
-		--text-color: var(--color-white, white);
-		
+		--main-color: var(--color-white, white);
 		@include Media.until('medium') {
-			&:has(.two) {
-				--text-color: var(--color-offwhite);
+			&:has(.one) {
+				--main-color: var(--color-offwhite);
 			}
 		}
+
+		--container-height: 100%;
+		--container-width: 100%;
+		@include Media.at('medium') {
+			--container-height: calc(100vh - 5rem);
+			--container-width: calc(100vh - 3rem);
+		}
+		@include Media.at('large') {
+			--container-height: 700px;
+			--container-width: 1044px;
+		}
+
+		background-color: var(--main-color);
 
 		height: 100vh;
 		width: 100vw;
@@ -60,37 +78,153 @@ const head2 = "<span>Save</span>\n<span>the date</span>";
 	}
 
 	.text-container {
-		height: 100%;
-		width: 100%;
+		--offset: var(--space-line);
 		@include Media.at('medium') {
-			max-height: 700px;
-			max-width: 1044px;
+			--offset: var(--space-small);
+		}
+		
+		height: var(--container-height);
+		width: var(--container-width);
+		
+		position: relative;
+		
+		z-index: 10;
+		color: var(--main-color);
+		
+		--border-width: 2px;
+		--border-offset: 8px;
+		@include Media.at('medium') {
+			&:before, &:after {
+				content: "";
+				position: absolute;
+				
+				max-width: 0;
+				max-height: 0;
+				height: 100%;
+				width: 100%;
+				
+				opacity: 0;
+				
+				animation: expand-in 1s ease-in-out 800ms 1 normal forwards;
+			}
 
-			border: 6px double var(--text-color);
+			&:before {
+				top: 0;
+				left: 0;
+				border-left: var(--border-width) solid var(--main-color);
+				border-top: var(--border-width) solid var(--main-color);
+			}
+			&:after {
+				right: 0;
+				bottom: 0;
+				border-right: var(--border-width) solid var(--main-color);
+				border-bottom: var(--border-width) solid var(--main-color);
+			}
+
+			@keyframes expand-in {
+				from {
+					opacity: 0;
+					max-height: 0;
+					max-width: 0;
+				}
+				15% {
+					max-height: 0;
+				}
+				to {
+					opacity: 1;
+					max-height: var(--max-height, 100%);
+					max-width: var(--max-width, 100%);
+				}
+			}
 		}
 
-		position: relative;
+		.content {
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+			
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+			@include Media.at('medium') {
+				--adjusted-size: calc(100% + (var(--border-offset) * 2));
+				--adjusted-size-down: calc(100% - (var(--border-offset) * 2));
+				--max-width: var(--adjusted-size);
+				--max-height: var(--adjusted-size);
+	
+				&:before, &:after {
+					content: "";
+					position: absolute;
+					opacity: 0;
+				}
+	
+				&:after {
+					top: calc(-1 * var(--border-offset));
+					left: var(--border-offset);
 
-		z-index: 10;
-		color: var(--text-color);
+					height: var(--adjusted-size);
+					max-height: var(--adjusted-size);
+	
+					width: var(--adjusted-size-down);
+					max-width: var(--adjusted-size-down);
+
+					border-right: var(--border-width) solid var(--main-color);
+					border-left: var(--border-width) solid var(--main-color);
+					
+					animation: expand-in-y 1s ease-in-out 800ms 1 normal forwards;
+				}
+				&:before {
+					top: var(--border-offset);
+					left: calc(-1 * var(--border-offset));
+
+					height: var(--adjusted-size-down);
+					max-height: var(--adjusted-size-down);
+	
+					width: var(--adjusted-size);
+					max-width: var(--adjusted-size);
+
+					border-bottom: var(--border-width) solid var(--main-color);
+					border-top: var(--border-width) solid var(--main-color);
+
+					animation: expand-in-x 1s ease-in-out 800ms 1 normal forwards;
+				}
+
+				@keyframes expand-in-x {
+					from {
+						opacity: 0;
+						max-width: 0;
+					}
+					to {
+						opacity: 1;
+						max-width: var(--max-width, 100%);
+					}
+				}
+				@keyframes expand-in-y {
+					from {
+						opacity: 0;
+						max-height: 0;
+					}
+					to {
+						opacity: 1;
+						max-height: var(--max-width, 100%);
+					}
+				}
+			}
+		}
 
 		h1, h2, p {
 			font-size: 3rem;
-			white-space: pre-line;
-
-			animation: rotate-up 800ms ease-in-out 200ms 1 forwards normal;
 		}
 
 		.center {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			gap: var(--space-tiny);
-			margin-bottom: var(--space-large);
+			
+			@include Media.until('medium') {
+				margin-bottom: var(--space-large);
+			}
 
 			h1, p {
 				display: inline-block;
@@ -108,26 +242,36 @@ const head2 = "<span>Save</span>\n<span>the date</span>";
 
 		.top {
 			position: absolute;
-			top: var(--space-line);
-			left: var(--space-line);
+			top: var(--offset);
+			left: var(--offset);
+			max-width: 15rem;
+
+			--x-translate: -10%;
+			--y-translate: 0%;
 		}
 		.bottom {
 			position: absolute;
-			bottom: var(--space-line);
-			right: var(--space-line);
+			bottom: var(--offset);
+			right: var(--offset);
+			max-width: 15rem;
 
 			text-align: right;
+
+			--x-translate: 10%;
+			--y-translate: 0%;
 		}
 	}
 
 	.image-container img {
+		z-index: 10;
+
 		position: fixed;
 		height: auto;
-
+		
 		&.dk {
 			left: 50%;
-			bottom: -5%;
-			translate: -50% 0;
+			top: 50%;
+			translate: -50% -79%;
 
 			width: 100vw;
 			min-width: 1512px;
@@ -145,5 +289,5 @@ const head2 = "<span>Save</span>\n<span>the date</span>";
 				left: -60%;
 			}
 		}
-	}
+		}
 </style>

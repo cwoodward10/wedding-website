@@ -12,7 +12,7 @@ $breakpoints: (
         @media (max-width: #{map.get($breakpoints, $breakpoint)}) {
             @content;
         }
-    } else {
+    } @else {
         @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
         + "Available breakpoints are: #{map.keys($breakpoints)}.";
     }
@@ -23,7 +23,7 @@ $breakpoints: (
         @media (min-width: #{map.get($breakpoints, $breakpoint)}) {
             @content;
         }
-    } else {
+    } @else {
         @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
         + "Available breakpoints are: #{map.keys($breakpoints)}.";
     }
