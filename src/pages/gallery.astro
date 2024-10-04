@@ -1,0 +1,271 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '@layouts/Layout.astro';
+
+const allImages = await getCollection('gallery');
+---
+
+<script>
+    const SHOW_CLASS = 'show';
+    const lightboxes = document.querySelectorAll('.lightbox');
+
+    const lightboxCloseButtons = document.querySelectorAll('.lightbox .close');
+    lightboxCloseButtons?.forEach(b => {
+        b.addEventListener('click', () => {
+            handleModalClose();
+        })
+    })
+    const backdrop = document.querySelectorAll('.lightbox .backdrop');
+    backdrop?.forEach(b => {
+        b.addEventListener('click', () => {
+            handleModalClose();
+        })
+    })
+
+    const handleModalClose = () => {
+        window.location.hash = '';
+    }
+    const handleHashChange = (e: Event) => {
+        const currentHash = location.hash.replace("#", '');
+        if (!currentHash || currentHash === '') {
+            lightboxes.forEach(lb => {
+                lb.classList.toggle(SHOW_CLASS, false);
+            })
+        }
+        
+        const lightbox = document.getElementById(`${currentHash}-lightbox`);
+        lightbox?.classList?.toggle(SHOW_CLASS, true);
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+</script>
+
+<Layout title='Image Gallery'>
+    <main>
+        <section class="hero">
+            <h1>The gallery</h1>
+            <p>
+                Our engagement photo shoot was shot by <a href="https://noellethiesco.pic-time.com/-nataliechris/gallery">Noelle Thies</a>. 
+                They were taken at 2 different sites. The first being Humboldt Park in Chicago and the other at 
+                the Oak Park - River Forest High School tennis courts in Oak Park, IL. 
+            </p>
+        </section>
+    
+        <section class="gallery">
+            {
+                allImages.map((image: any, i: number) => (
+                    <a id={`image-${i}`} class={`image ${image.data.direction}`} href={`#image-${i}`}>
+                        <Image
+                            src={image.data.src} 
+                            alt={image.data.alt}
+                            width={image.data.direction === 'horizontal' ? 500 : 400}
+                        />
+                    </a>
+                ))
+            }
+        </section>
+        <div>
+        {
+            allImages.map((image: any, i: number) => (
+                <div id={`image-${i}-lightbox`} class="lightbox">
+                    <button class="close" aria-name="close"/>
+                    <div class="backdrop" />
+                    <Image
+                        src={image.data.src} 
+                        alt={image.data.alt}
+                    />
+                </div>
+            ))
+        }
+        </div>
+    </main>
+</Layout>
+
+<style lang="scss">
+    @use '@styles/media.scss' as Media;
+
+    main {
+        max-width: 400px;
+        @include Media.at('medium') {
+            max-width: 720px;
+        }
+        @include Media.at('large') {
+            max-width: 1000px;
+        }
+        @include Media.at('extra-large') {
+            max-width: 1200px;
+        }
+
+
+        margin: auto;
+
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-line);
+
+        padding: var(--space-line) var(--space-line) var(--space-large);
+        
+        @include Media.at('medium') {
+            gap: var(--space-small);
+            padding: var(--space-large) 0 var(--space-large);
+        }
+
+        &:has(.lightbox.show) {
+            section {
+                pointer-events: none;
+            }
+        }
+    }
+
+    p {
+        max-width: 800px;
+        text-wrap: pretty;
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-line);
+    }
+    .gallery {
+        display: grid;
+        grid-auto-flow: dense;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-base);
+
+        @include Media.at('medium') {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @include Media.at('large') {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @include Media.at('extra-large') {
+            grid-template-columns: repeat(5, 1fr);
+        }
+        
+        
+        .image {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: auto;
+
+            cursor: pointer;
+
+            @include Media.at('medium') {
+                height: 349px;
+            }
+            @include Media.at('large') {
+                height: 363px;
+            }
+            @include Media.at('extra-large') {
+                height: 347px;
+            }
+            
+            img {
+                pointer-events: none;
+                width: 100%;
+                height: auto;
+                aspect-ratio: auto 1067 / 1600;
+            }
+
+            &.horizontal {
+                grid-column-start: span 2;
+
+                img {
+                    max-width: unset;
+                    width: auto;
+                    height: 100%;
+                    aspect-ratio: auto 1600 / 1067;
+                }
+            }            
+        }
+    }
+
+    .lightbox:not(.show) {
+            display: none;
+            content-visibility: hidden;
+            visibility: hidden;
+    }
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            z-index: 10;
+            isolation: isolate;
+            max-width: calc(100vw - 2rem);
+            max-height: calc(100vh - 5rem);
+            height: auto;
+            width: auto;
+        }
+
+        .backdrop {
+            z-index: 5;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: .9;
+            background-color: var(--color-gray-dark);
+            backdrop-filter: blur(10px);
+        }
+
+        .close {
+            z-index: 10;
+            cursor: pointer;
+            height: 40px;
+            aspect-ratio: 1 / 1;
+
+            position: absolute;
+            top: var(--space-line);
+            right: var(--space-line);
+            @include Media.at('medium') {
+                top: var(--space-small);
+                right: var(--space-small);
+            }
+
+            border: var(--color-white) solid 2px;
+            background-color: transparent;
+            border-radius: 888px;
+
+            &::after, &:before {
+                content: "";
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                translate: -50% -50%;
+
+                width: 2px;
+                height: calc(100% - 0.75rem);
+
+                background-color: var(--color-white);
+            }
+            &::before {
+                rotate: 45deg;
+            }
+            &::after {
+                rotate: -45deg;
+            }
+
+            &:hover {
+                background-color: var(--color-white);
+                &:before, &:after {
+                    background-color: var(--color-gray-dark);
+                }
+            }
+        }
+    }
+</style>

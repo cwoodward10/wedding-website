@@ -1,0 +1,35 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+	title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Layout {title}>
+    <main>
+        <slot/>
+    </main>
+</Layout>
+
+<style lang="scss">
+    @use '@styles/media.scss' as Media;
+
+    main {
+        max-width: 1000px;
+        margin: auto;
+
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-line);
+
+        padding: var(--space-line);
+        
+        @include Media.at('medium') {
+            gap: var(--space-small);
+            padding: var(--space-small);
+        }
+    }
+</style>

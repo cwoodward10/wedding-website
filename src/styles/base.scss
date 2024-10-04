@@ -1,11 +1,14 @@
 @layer base {
     :root {
+        --color-gray-dark: #303030;
         --color-green: #0B532A;
         --color-orage: #FADFBD;
         --color-offwhite: #FEFEE3;
         --color-white: white;
+        --color-black: #161616
 
         --font-title: "Playfair Display SC", serif;
+        --font-body: "Playfair", serif;
 
         --space-tiny: 0.5rem;
         --space-base: 0.625rem;
@@ -20,13 +23,14 @@
         margin: 0;
     }
 
-    h1, h2, h3, h4, h5, h6, a, p {
+    h1, h2, h3, h4, h5, h6 {
         font-family: var(--font-title);
         font-weight: 400;
         margin: 0;
-    }
-    h1, h2, h3, h4, h5, h6 {
         text-transform: uppercase;
+    }
+    a, p {
+        font-family: var(--font-body);
     }
 }
 
