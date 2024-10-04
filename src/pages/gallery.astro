@@ -10,6 +10,7 @@ const allImages = await getCollection('gallery');
     const SHOW_CLASS = 'show';
     const SHOW_CLASS_BF = 'show-below-fold';
 
+    const imageLinks = document.querySelectorAll('a.image');
     const lightboxes = document.querySelectorAll('.lightbox');
 
     const lightboxCloseButtons = document.querySelectorAll('.lightbox .close');
@@ -26,21 +27,24 @@ const allImages = await getCollection('gallery');
     })
 
     const handleModalClose = () => {
-        window.location.hash = '';
-    }
-    const handleHashChange = (e: Event) => {
-        const currentHash = location.hash.replace("#", '');
-        if (!currentHash || currentHash === '') {
-            lightboxes.forEach(lb => {
-                lb.classList.toggle(SHOW_CLASS, false);
-            })
-        }
-        
-        const lightbox = document.getElementById(`${currentHash}-lightbox`);
-        lightbox?.classList?.toggle(SHOW_CLASS, true);
+        console.log(location)
+        history.pushState({}, '', location.pathname);
+        lightboxes.forEach(lb => {
+            lb.classList.toggle(SHOW_CLASS, false);
+        })
     }
 
-    window.addEventListener('hashchange', handleHashChange);
+    imageLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const id = link.id;
+            history.pushState({}, '', `${location.origin}/gallery#${id}`)
+
+            const lightbox = document.getElementById(`${id}-lightbox`);
+            lightbox?.classList?.toggle(SHOW_CLASS, true);
+        })
+    })
 
     let initialLoad = true;
     const images = document.querySelectorAll('.gallery .image');
@@ -51,10 +55,32 @@ const allImages = await getCollection('gallery');
         initialLoad = false;
     })
     images.forEach(i => observer.observe(i));
+
+    const currentHash = location.hash.replace("#", '');
+    const lightbox = document.getElementById(`${currentHash}-lightbox`);
+    lightbox?.classList?.toggle(SHOW_CLASS, true);
+    if (!lightbox) {
+        history.pushState({}, '', location.pathname);
+    }
 </script>
 
 <Layout title='Image Gallery'>
     <main>
+        <div class="lightbox-container">
+        {
+            allImages.map((image: any, i: number) => (
+                <div id={`image-${i}-lightbox`} class="lightbox">
+                    <button class="close" aria-name="close"/>
+                    <div class="backdrop" />
+                    <Image
+                        src={image.data.src} 
+                        alt={image.data.alt}
+                    />
+                </div>
+            ))
+        }
+        </div>
+
         <section class="hero" style="--animation-duration: 1500ms;">
             <h1 class="fly-in">The gallery</h1>
             <p class="fly-in" style="--animation-delay: 200ms;">
@@ -82,20 +108,6 @@ const allImages = await getCollection('gallery');
                 ))
             }
         </section>
-        <div>
-        {
-            allImages.map((image: any, i: number) => (
-                <div id={`image-${i}-lightbox`} class="lightbox">
-                    <button class="close" aria-name="close"/>
-                    <div class="backdrop" />
-                    <Image
-                        src={image.data.src} 
-                        alt={image.data.alt}
-                    />
-                </div>
-            ))
-        }
-        </div>
     </main>
 </Layout>
 
@@ -103,15 +115,22 @@ const allImages = await getCollection('gallery');
     @use '@styles/media.scss' as Media;
 
     main {
-        max-width: 400px;
-        @include Media.at('medium') {
-            max-width: 720px;
-        }
-        @include Media.at('large') {
-            max-width: 1000px;
-        }
-        @include Media.at('extra-large') {
-            max-width: 1200px;
+        scroll-behavior: smooth;
+
+        section {
+            margin: auto;
+            
+            width: 100%;
+            max-width: 400px;
+            @include Media.at('medium') {
+                max-width: 720px;
+            }
+            @include Media.at('large') {
+                max-width: 1000px;
+            }
+            @include Media.at('extra-large') {
+                max-width: 1200px;
+            }
         }
 
 
@@ -121,7 +140,7 @@ const allImages = await getCollection('gallery');
         flex-direction: column;
         gap: var(--space-line);
 
-        padding: var(--space-line) var(--space-line) var(--space-large);
+        padding: 1.5rem var(--space-line) var(--space-large);
         
         @include Media.at('medium') {
             gap: var(--space-small);
@@ -166,6 +185,13 @@ const allImages = await getCollection('gallery');
             scale: 0;
             opacity: 0;
             content-visibility: auto;
+
+            transition: transform 200ms ease-in-out;
+
+            &:hover {
+                box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+                transform: scale(1.01);
+            }
             
             &.show {
                 --animation-delay: calc(var(--base-delay, 0) + var(--delay-offset, 0));
@@ -237,6 +263,9 @@ const allImages = await getCollection('gallery');
         }
     }
 
+    .lightbox-container {
+        position: fixed;
+    }
     .lightbox:not(.show) {
             display: none;
             content-visibility: hidden;
@@ -252,6 +281,7 @@ const allImages = await getCollection('gallery');
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 211;
 
         img {
             z-index: 10;
@@ -267,8 +297,7 @@ const allImages = await getCollection('gallery');
             position: absolute;
             height: 100%;
             width: 100%;
-            opacity: .9;
-            background-color: var(--color-gray-dark);
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
         }
 

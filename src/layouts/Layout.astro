@@ -1,21 +1,22 @@
 ---
 import Head from '@components/infra/Head.astro';
+import TheHeader from '@components/TheHeader.svelte';
 
 interface Props {
 	title?: string;
+	page?: 'home' | 'default';
 }
 
-const { title } = Astro.props;
+const { title, page = 'default' } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<Head title={title} />
+		<Head {title} />
 	</head>
 	<body>
-		<main>
-			<slot />
-		</main>
+		<TheHeader {page} client:only="svelte" />
+		<slot />
 	</body>
 </html>

@@ -11,7 +11,7 @@ const seed = Math.ceil(Math.random() * 2);
 
 ---
 
-<Layout>
+<Layout page="home">
 	<main style="--animation-timing-function: ease-in-out">
 		<div class="image-container" style="--animation-delay: 100ms; --animation-duration: 500ms;">
 			{seed === 1 ?
@@ -47,14 +47,21 @@ const seed = Math.ceil(Math.random() * 2);
 <style lang="scss">
 	@use '@styles/media.scss' as Media;
 
-	main {
+	
+	:global(:root) {
 		--main-color: var(--color-white, white);
 		@include Media.until('medium') {
 			&:has(.one) {
 				--main-color: var(--color-offwhite);
 			}
 		}
+	}
+	:global(header) {
+		opacity: 0;
+		animation: fade-in 1s ease-out 1.75s 1 normal forwards;
+	}
 
+	main {
 		--container-height: 100%;
 		--container-width: 100%;
 		@include Media.at('medium') {
@@ -215,7 +222,9 @@ const seed = Math.ceil(Math.random() * 2);
 
 		h1, h2, p {
 			font-size: 3rem;
+			line-height: 100%;
 			margin: 0;
+			color: var(--main-color);
 		}
 
 		.center {
@@ -296,5 +305,5 @@ const seed = Math.ceil(Math.random() * 2);
 				left: -60%;
 			}
 		}
-		}
+	}
 </style>
