@@ -59,7 +59,7 @@ const seed = Math.ceil(Math.random() * 2);
 		--container-width: 100%;
 		@include Media.at('medium') {
 			--container-height: calc(100vh - 5rem);
-			--container-width: calc(100vh - 3rem);
+			--container-width: calc(100vw - 3rem);
 		}
 		@include Media.at('large') {
 			--container-height: 700px;
@@ -215,6 +215,7 @@ const seed = Math.ceil(Math.random() * 2);
 
 		h1, h2, p {
 			font-size: 3rem;
+			margin: 0;
 		}
 
 		.center {
@@ -270,8 +271,14 @@ const seed = Math.ceil(Math.random() * 2);
 		
 		&.dk {
 			left: 50%;
-			top: 50%;
-			translate: -50% -79%;
+			bottom: 0;
+			translate: -50% 1%;
+			@include Media.at('large') {
+				translate: -50% 2%;
+			}
+			@include Media.at('extra-large') {
+				translate: -50% 4%;
+			}
 
 			width: 100vw;
 			min-width: 1512px;

@@ -8,6 +8,8 @@ const allImages = await getCollection('gallery');
 
 <script>
     const SHOW_CLASS = 'show';
+    const SHOW_CLASS_BF = 'show-below-fold';
+
     const lightboxes = document.querySelectorAll('.lightbox');
 
     const lightboxCloseButtons = document.querySelectorAll('.lightbox .close');
@@ -38,24 +40,39 @@ const allImages = await getCollection('gallery');
         lightbox?.classList?.toggle(SHOW_CLASS, true);
     }
 
-    window.addEventListener('hashchange', handleHashChange)
+    window.addEventListener('hashchange', handleHashChange);
+
+    let initialLoad = true;
+    const images = document.querySelectorAll('.gallery .image');
+    const observer = new IntersectionObserver((e) => {
+        const visible = e.filter(entry => entry.isIntersecting);
+        visible.forEach(image => (image.target as HTMLAnchorElement)?.classList?.toggle(initialLoad ? SHOW_CLASS : SHOW_CLASS_BF, true));
+
+        initialLoad = false;
+    })
+    images.forEach(i => observer.observe(i));
 </script>
 
 <Layout title='Image Gallery'>
     <main>
-        <section class="hero">
-            <h1>The gallery</h1>
-            <p>
+        <section class="hero" style="--animation-duration: 1500ms;">
+            <h1 class="fly-in">The gallery</h1>
+            <p class="fly-in" style="--animation-delay: 200ms;">
                 Our engagement photo shoot was shot by <a href="https://noellethiesco.pic-time.com/-nataliechris/gallery">Noelle Thies</a>. 
                 They were taken at 2 different sites. The first being Humboldt Park in Chicago and the other at 
                 the Oak Park - River Forest High School tennis courts in Oak Park, IL. 
             </p>
         </section>
     
-        <section class="gallery">
+        <section class="gallery" style="--base-delay: 500ms;">
             {
                 allImages.map((image: any, i: number) => (
-                    <a id={`image-${i}`} class={`image ${image.data.direction}`} href={`#image-${i}`}>
+                    <a 
+                        id={`image-${i}`} 
+                        class={`image ${image.data.direction}`} 
+                        href={`#image-${i}`}
+                        style={`--delay-offset: ${Math.random() * 500}ms;`}
+                    >
                         <Image
                             src={image.data.src} 
                             alt={image.data.alt}
@@ -146,25 +163,43 @@ const allImages = await getCollection('gallery');
         
         
         .image {
+            scale: 0;
+            opacity: 0;
+            content-visibility: auto;
+            
+            &.show {
+                --animation-delay: calc(var(--base-delay, 0) + var(--delay-offset, 0));
+                --animation-duration: 1000ms;
+            }
+            &.show-below-fold {
+                --animation-delay: 100ms;
+                --animation-duration: 700ms;
+
+            }
+            animation: pop-in var(--animation-duration) cubic-bezier(.78,.04,.74,1.17) var(--animation-delay) 1 normal forwards;
+
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-
-            width: 100%;
-            height: auto;
-
+            
             cursor: pointer;
+            
+            width: 100%;
+            height: 100%;
 
-            @include Media.at('medium') {
-                height: 349px;
-            }
-            @include Media.at('large') {
-                height: 363px;
-            }
-            @include Media.at('extra-large') {
-                height: 347px;
+            &:has(.horizontal) {
+                height: auto;
+                @include Media.at('medium') {
+                    height: 349px;
+                }
+                @include Media.at('large') {
+                    height: 363px;
+                }
+                @include Media.at('extra-large') {
+                    height: 347px;
+                }
             }
             
             img {
@@ -183,7 +218,22 @@ const allImages = await getCollection('gallery');
                     height: 100%;
                     aspect-ratio: auto 1600 / 1067;
                 }
-            }            
+            }
+            &.vertical:nth-child(3n - 2) {
+                grid-column-start: span 2;
+                grid-row-start: span 2;
+            }      
+        }
+
+        @keyframes pop-in {
+            from {
+                scale: 0.5;
+                opacity: 0;
+            }
+            to {
+                scale: 1;
+                opacity: 1;
+            }
         }
     }
 

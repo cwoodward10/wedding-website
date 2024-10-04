@@ -118,7 +118,7 @@
 
     .fly-in {
         opacity: var(--opacity-start, 0);
-        translate: var(--x-translate, 0) var(--y-translate, 100%);
+        translate: var(--x-translate, 15%) var(--y-translate, 0%);
         animation-name: fly-in;
         animation-duration: var(--animation-duration, 1000ms);
         animation-timing-function: var(--animation-timing-function, cubic-bezier(.27,.03,.31,.99));
@@ -178,7 +178,7 @@
     @keyframes fly-in {
         from {
             opacity: var(--opacity-start, 0);
-            translate: var(--x-translate, 0px) var(--y-translate, -50%);
+            translate: var(--x-translate, -15%) var(--y-translate, 0%);
         }
         to {
             opacity: 1;
