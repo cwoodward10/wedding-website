@@ -9,7 +9,9 @@ import vercel from '@astrojs/vercel/serverless';
 export default defineConfig({
   integrations: [svelte()],
   output: 'server',
-  adapter: vercel({}),
+  adapter: vercel({
+    edgeMiddleware: true,
+  }),
   security: {
 		checkOrigin: true
 	}
