@@ -3,7 +3,8 @@
 type EdgeLocals = import('@astrojs/vercel').EdgeLocals
 
 declare namespace App {
-  interface Locals extends EdgeLocals {}
+  interface Locals extends EdgeLocals {
+  }
 }
 
 interface ImportMetaEnv {

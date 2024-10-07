@@ -11,7 +11,6 @@ export default defineConfig({
   output: 'server',
   adapter: vercel({
     edgeMiddleware: true,
-    imageService: true,
   }),
   security: {
 		checkOrigin: true
