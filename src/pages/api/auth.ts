@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect, url }) => {
             expires: new Date('Sun, 21 Sep 2025 12:00:00 GMT')
         })
         
-        const response = redirect(url.searchParams.get("redirect") ?? '/');
+        const response = redirect(url.searchParams.get("redirect") ?? '/', 307);
         return response;
     } else {
         return new Response(
