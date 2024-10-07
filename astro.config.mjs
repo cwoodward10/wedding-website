@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [svelte()],
   output: 'server',
   adapter: vercel({
-    edgeMiddleware: true,
+    //edgeMiddleware: true,
   }),
   security: {
 		checkOrigin: true
