@@ -11,6 +11,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		return next();
 	} 
 
+	if (context.url.pathname.includes("/_image")) {
+		return next();
+	}
+
 	const cookie = context.cookies.get(COOKIE_ID);
 	if (cookie === undefined || cookie.value === undefined) {
 		return context.rewrite(new Request(`${context.url.origin}/password`, {

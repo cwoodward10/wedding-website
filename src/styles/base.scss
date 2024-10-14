@@ -33,6 +33,7 @@
         text-transform: uppercase;
     }
     a, p {
+        font-size: 1.25rem;
         font-family: var(--font-body);
     }
     a {
@@ -78,6 +79,10 @@
                 }
             }
         }
+    }
+
+    input:focus {
+        outline-color: var(--color-green);
     }
 }
 
@@ -193,11 +198,13 @@
     }
     @keyframes expand-in {
         from {
-            max-width: 0;
+            max-width: var(--max-width-start, 0);
+            max-height: var(--max-height-start, 100%);
             opacity: .25;
         }
         to {
             max-width: var(--max-width, 100%);
+            max-height: var(--max-height, 100%);
             opacity: 1;
         }
     }
