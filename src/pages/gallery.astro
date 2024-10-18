@@ -27,7 +27,6 @@ const allImages = await getCollection('gallery');
     })
 
     const handleModalClose = () => {
-        console.log(location)
         history.pushState({}, '', location.pathname);
         lightboxes.forEach(lb => {
             lb.classList.toggle(SHOW_CLASS, false);

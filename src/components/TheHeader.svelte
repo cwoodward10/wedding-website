@@ -29,7 +29,7 @@
         prevY = scrollY;
     }
 
-    function isCurrent(path) {
+    function isCurrent(path: string) {
         return location.pathname === path;
     }
 </script>
@@ -77,23 +77,12 @@
     #top-header {
         z-index: 100;
 
+        width: 100%;
         position: sticky;
         top: 0;
-        @include Media.until('small') {
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            background-color: transparent;
-        }
         
         display: flex;
         padding: 1.3rem var(--space-line);
-        @include Media.at('medium') {
-            padding: 1rem var(--space-small);
-        }
-
-        width: 100vw;
 
         background-color: var(--color-white);
 
@@ -110,6 +99,11 @@
             #header-content {
                 justify-content: flex-end;
                 align-items: flex-end;
+
+                .logo-container {
+                    display: none;
+                    content-visibility: hidden;
+                }
             }
         }
 
@@ -120,8 +114,20 @@
             transform: translateY(-100%);
         }
 
-        &.shadow {
-            box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+        @include Media.until('small') {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            background-color: transparent;
+        }
+
+        @include Media.at('medium') {
+            padding: 1rem var(--space-small);
+
+            &.shadow {
+                box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+            }
         }
     }
 

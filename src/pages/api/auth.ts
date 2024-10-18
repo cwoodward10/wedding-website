@@ -17,6 +17,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect, url }) => {
         const response = redirect(url.searchParams.get("redirect") ?? '/', 307);
         return response;
     } else {
+        console.error(`Tried: ${password}. Expected: ${serverPassword}`)
         return new Response(
             JSON.stringify({
                 message: "Invalid password",

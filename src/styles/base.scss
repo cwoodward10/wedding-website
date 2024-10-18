@@ -4,7 +4,7 @@
     :root {
         --color-gray-dark: #303030;
         --color-green: #0B532A;
-        --color-orage: #FADFBD;
+        --color-orange: #FADFBD;
         --color-offwhite: #FEFEE3;
         --color-white: white;
         --color-black: #161616
@@ -20,6 +20,21 @@
         --space-large: 5rem;
         --space-extra-large: 8rem;
     }
+
+    * {
+		/* Foreground, Background */
+		scrollbar-color: #999 #333;
+	}
+	*::-webkit-scrollbar {
+		width: 6px; /* Mostly for vertical scrollbars */
+		height: 2px; /* Mostly for horizontal scrollbars */
+	}
+	*::-webkit-scrollbar-thumb { /* Foreground */
+		background: #999;
+	}
+	*::-webkit-scrollbar-track { /* Background */
+		background: #333;
+	}
 
     body {
         margin: 0;
