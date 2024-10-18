@@ -1,7 +1,9 @@
 ---
+import Layout from '@layouts/Layout.astro';
+import Icon from "heroicons-astro/Heroicon.astro";
+
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import Layout from '@layouts/Layout.astro';
 
 const allImages = await getCollection('gallery');
 ---
@@ -13,18 +15,83 @@ const allImages = await getCollection('gallery');
     const imageLinks = document.querySelectorAll('a.image');
     const lightboxes = document.querySelectorAll('.lightbox');
 
+    const imageCount = lightboxes.length;
+
     const lightboxCloseButtons = document.querySelectorAll('.lightbox .close');
     lightboxCloseButtons?.forEach(b => {
         b.addEventListener('click', () => {
             handleModalClose();
         })
     })
-    const backdrop = document.querySelectorAll('.lightbox .backdrop');
-    backdrop?.forEach(b => {
+    const closeButton = document.querySelectorAll('.lightbox-container .close');
+    closeButton?.forEach(b => {
         b.addEventListener('click', () => {
             handleModalClose();
         })
     })
+
+    const showLightbox = (id: number | string) => {
+        history.pushState({}, '', `${location.origin}/gallery#${id}`);
+
+        const allLightboxImages = document.querySelectorAll('.lightbox-container .lightbox.show');
+        allLightboxImages?.forEach(i => {
+            i.classList.toggle(SHOW_CLASS, false);
+        })
+
+        const containerEl = document.querySelector('.lightbox-container');
+        const bigImage = document.getElementById(`${id}-lightbox`);
+
+        if (!bigImage) {
+            history.pushState({}, '', location.pathname);
+            handleModalClose();
+            return;
+        }
+        
+        containerEl?.classList.toggle(SHOW_CLASS, true);
+        bigImage?.classList?.toggle(SHOW_CLASS, true);
+    }
+
+    const handleNext = () => {
+        const currentHash = location.hash?.replace("#image-", '');
+        if (currentHash == null || currentHash === '') {
+            return;
+        }
+
+        const hashIndex = parseInt(currentHash, 10);
+        const nextId = imageCount - 1 === hashIndex ? 0 : hashIndex + 1;
+        showLightbox(`image-${nextId}`);
+    }
+    const handlePrevious = () => {
+        const currentHash = location.hash?.replace("#image-", '');
+        if (currentHash == null || currentHash === '') {
+            return;
+        }
+
+        const hashIndex = parseInt(currentHash, 10);
+        const nextId = hashIndex === 0 ? imageCount - 1 : hashIndex - 1;
+        showLightbox(`image-${nextId}`);
+    }
+
+    const handleHashChange = (e: HashChangeEvent) => {
+        e.preventDefault();
+        const currentHash = location.hash?.replace("#", '');
+        showLightbox(currentHash);
+    }
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+        e.preventDefault();
+        switch (e.key) {
+            case 'Escape':
+                handleModalClose();
+                return;
+            case 'ArrowRight':
+                handleNext();
+                return;
+            case 'ArrowLeft':
+                handlePrevious();
+                return;
+        }
+    }
 
     const handleModalClose = () => {
         history.pushState({}, '', location.pathname);
@@ -35,6 +102,8 @@ const allImages = await getCollection('gallery');
         lightboxes.forEach(lb => {
             lb.classList.toggle(SHOW_CLASS, false);
         })
+
+        window.removeEventListener('keydown', handleKeyDown);
     }
 
     imageLinks.forEach(link => {
@@ -42,15 +111,17 @@ const allImages = await getCollection('gallery');
             e.preventDefault();
 
             const id = link.id;
-            history.pushState({}, '', `${location.origin}/gallery#${id}`)
+            showLightbox(id);
 
-            const containerEl = document.querySelector('.lightbox-container');
-            containerEl?.classList.toggle(SHOW_CLASS, true);
-
-            const bigImage = document.getElementById(`${id}-lightbox`);
-            bigImage?.classList?.toggle(SHOW_CLASS, true);
+            window.addEventListener('keydown', handleKeyDown);
         })
     })
+
+    const previousBtn = document.querySelector('.nav-container button.previous');
+    previousBtn?.addEventListener('click', handlePrevious);
+
+    const nextBtn = document.querySelector('.nav-container button.next');
+    nextBtn?.addEventListener('click', handleNext);
 
     let initialLoad = true;
     const images = document.querySelectorAll('.gallery .image');
@@ -63,28 +134,36 @@ const allImages = await getCollection('gallery');
     images.forEach(i => observer.observe(i));
 
     const currentHash = location.hash.replace("#", '');
-    const lightbox = document.getElementById(`${currentHash}-lightbox`);
-    lightbox?.classList?.toggle(SHOW_CLASS, true);
-    if (!lightbox) {
-        history.pushState({}, '', location.pathname);
-    }
+    showLightbox(currentHash);
+
+    window.addEventListener('hashchange', handleHashChange)
 </script>
 
 <Layout title='Image Gallery'>
     <div class="lightbox-container">
-        {
-            allImages.map((image: any, i: number) => (
-                <div id={`image-${i}-lightbox`} class="lightbox">
-                    <button class="close" aria-name="close"/>
-                    <Image
-                        src={image.data.src} 
-                        alt={image.data.alt}
-                        class="fade-in"
-                        style="--animation-duration: 300ms; --animation-delay: 100ms;"
-                    />
-                </div>
-            ))
-        }
+        <div class="content">
+            {
+                allImages.map((image: any, i: number) => (
+                    <div id={`image-${i}-lightbox`} class="lightbox">
+                        <Image
+                            src={image.data.src} 
+                            alt={image.data.alt}
+                            class="fade-in"
+                            style="--animation-duration: 300ms; --animation-delay: 100ms;"
+                        />
+                    </div>
+                ))
+            }
+            <div class="nav-container">
+                <button class="nav previous" aria-name="previous">
+                    <Icon iconCode="chevron-left" iconStyle="outline" />
+                </button>
+                <button class="nav next" aria-name="next">
+                    <Icon iconCode="chevron-right" iconStyle="outline" />
+                </button>
+            </div>
+        </div>
+        <button class="close" aria-name="close"/>
         <div class="backdrop fade-in" style="--animation-duration: 100ms;" />
     </div>
     <main>
@@ -294,6 +373,7 @@ const allImages = await getCollection('gallery');
         left: 0;
         right: 0;
         bottom: 0;
+        overflow: hidden;
 
         .backdrop {
             z-index: 5;
@@ -303,27 +383,6 @@ const allImages = await getCollection('gallery');
             
             background-color: rgba(75, 75, 75, 0.65);
             backdrop-filter: blur(10px);
-        }
-    }
-    .lightbox {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 211;
-
-        img {
-            z-index: 10;
-            isolation: isolate;
-            max-width: calc(100vw - 2rem);
-            max-height: calc(100vh - 5rem);
-            height: auto;
-            width: auto;
         }
 
         .close {
@@ -368,6 +427,75 @@ const allImages = await getCollection('gallery');
                 background-color: var(--color-white);
                 &:before, &:after {
                     background-color: var(--color-gray-dark);
+                }
+            }
+        }
+    }
+    .lightbox-container .content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+
+        z-index: 211;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-line);
+
+        img {
+            z-index: 10;
+            isolation: isolate;
+            max-width: calc(100vw - 6rem);
+            max-height: calc(100vh - 5rem);
+            height: auto;
+            width: auto;
+        }
+
+        .nav-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: var(--space-line);
+
+            @include Media.at('medium') {
+                z-index: 2000;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                translate: -50% -50%;
+
+                width: calc(100% + 5rem);
+
+                justify-content: space-between;
+            }
+
+            button {
+                position: relative;
+                height: 2rem;
+                width: auto;
+                aspect-ratio: 1 / 1;
+
+                background-color: transparent;
+                border: var(--color-white) 1px solid;
+                border-radius: 100%;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                :global(svg) {
+                    color: var(--color-white);
+                }
+                &.previous :global(svg) {
+                    translate: -5% 0;
+                }
+                &.next :global(svg) {
+                    translate: 5% 0;
                 }
             }
         }
