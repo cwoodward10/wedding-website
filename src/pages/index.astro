@@ -105,6 +105,8 @@ const seed = Math.ceil(Math.random() * 2);
 		--border-width: 2px;
 		--border-offset: 8px;
 		@include Media.at('medium') {
+			overflow: visible;
+
 			&:before, &:after {
 				content: "";
 				position: absolute;

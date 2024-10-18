@@ -28,6 +28,10 @@ const allImages = await getCollection('gallery');
 
     const handleModalClose = () => {
         history.pushState({}, '', location.pathname);
+
+        const containerEl = document.querySelector('.lightbox-container');
+        containerEl?.classList.toggle(SHOW_CLASS, false);
+
         lightboxes.forEach(lb => {
             lb.classList.toggle(SHOW_CLASS, false);
         })
@@ -40,8 +44,11 @@ const allImages = await getCollection('gallery');
             const id = link.id;
             history.pushState({}, '', `${location.origin}/gallery#${id}`)
 
-            const lightbox = document.getElementById(`${id}-lightbox`);
-            lightbox?.classList?.toggle(SHOW_CLASS, true);
+            const containerEl = document.querySelector('.lightbox-container');
+            containerEl?.classList.toggle(SHOW_CLASS, true);
+
+            const bigImage = document.getElementById(`${id}-lightbox`);
+            bigImage?.classList?.toggle(SHOW_CLASS, true);
         })
     })
 
@@ -64,21 +71,23 @@ const allImages = await getCollection('gallery');
 </script>
 
 <Layout title='Image Gallery'>
-    <main>
-        <div class="lightbox-container">
+    <div class="lightbox-container">
         {
             allImages.map((image: any, i: number) => (
                 <div id={`image-${i}-lightbox`} class="lightbox">
                     <button class="close" aria-name="close"/>
-                    <div class="backdrop" />
                     <Image
                         src={image.data.src} 
                         alt={image.data.alt}
+                        class="fade-in"
+                        style="--animation-duration: 300ms; --animation-delay: 100ms;"
                     />
                 </div>
             ))
         }
-        </div>
+        <div class="backdrop fade-in" style="--animation-duration: 100ms;" />
+    </div>
+    <main>
 
         <section class="hero" style="--animation-duration: 1500ms;">
             <h1 class="fly-in">The gallery</h1>
@@ -262,13 +271,39 @@ const allImages = await getCollection('gallery');
         }
     }
 
-    .lightbox-container {
-        position: fixed;
+    :global(html:has(.lightbox.show)) {
+        body {
+            overflow: hidden;
+        }
+        main {
+            pointer-events: none;
+        }
     }
+
+    .lightbox-container:not(.show),
     .lightbox:not(.show) {
             display: none;
             content-visibility: hidden;
             visibility: hidden;
+    }
+
+    .lightbox-container {
+        z-index: 1000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .backdrop {
+            z-index: 5;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            
+            background-color: rgba(75, 75, 75, 0.65);
+            backdrop-filter: blur(10px);
+        }
     }
     .lightbox {
         position: fixed;
@@ -289,15 +324,6 @@ const allImages = await getCollection('gallery');
             max-height: calc(100vh - 5rem);
             height: auto;
             width: auto;
-        }
-
-        .backdrop {
-            z-index: 5;
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
         }
 
         .close {
