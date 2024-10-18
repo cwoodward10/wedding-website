@@ -146,9 +146,16 @@ onMount(() => {
 
 :global(html body:has(#menu-container.show-menu)) {
     overflow: hidden;
+
+    body {
+        pointer-events: none;
+    }
 }
 #menu-container {
-    content-visibility: auto;
+    display: flex;
+    @supports (content-visibility: auto) {
+        content-visibility: auto;
+    }
 
     z-index: 40;
     position: fixed;
@@ -160,19 +167,24 @@ onMount(() => {
 
     overflow: hidden;
 
-    display: flex;
     flex-grow: 0;
 
     border-bottom-left-radius: 100%;
 
-    background-color: color-mix(in srgb, transparent 5%, var(--color-green) 90%);
+    background-color: color-mix(in srgb, transparent 10%, var(--color-green) 80%);
     backdrop-filter: blur(10px);
 
-    transition-property: height, width, border-radius;
-    transition-duration: var(--ham-transition-duration);
+    transition-property: display, height, width, border-radius;
+    transition-duration: var(--ham-transition-duration, 300ms);
     transition-timing-function: ease-in-out;
 
+    @supports (transition-behavior: allow-discrete) {
+        display: none;
+        transition-behavior: allow-discrete;
+    }
+
     &.show-menu {
+        display: flex;
         width: 100dvw;
         height: 100dvh;
         border-radius: 0px;
