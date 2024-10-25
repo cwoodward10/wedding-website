@@ -96,6 +96,10 @@
         }
     }
 
+    button {
+        cursor: pointer;
+    }
+
     input:focus {
         outline-color: var(--color-green);
     }
