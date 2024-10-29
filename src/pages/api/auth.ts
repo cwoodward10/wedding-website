@@ -1,21 +1,18 @@
 import type { APIRoute } from "astro"
 import { COOKIE_ID } from "src/auth";
 
-export const POST: APIRoute = async ({ request, cookies, redirect, url }) => {
-    const data = await request.formData();
-    const password = data.get('password');
+export const POST: APIRoute = async ({ request }) => {
+    const jsonData = await request.json();
+    const password = (jsonData as any).password;
 
     const serverPassword = import.meta.env.SITE_PASSWORD;
     if (password === serverPassword) {
-        cookies.set(COOKIE_ID, 'wooo', {
-            httpOnly: true,
-            path: '/',
-            secure: true,
-            expires: new Date('Sun, 21 Sep 2025 12:00:00 GMT')
-        })
-        
-        const response = redirect(url.searchParams.get("redirect") ?? '/', 307);
-        return response;
+        return new Response(JSON.stringify({
+            name: COOKIE_ID,
+            value: 'wooo',
+            date: 'Sun, 21 Sep 2025 12:00:00 GMT'
+        }),
+        { status: 200 })
     } else {
         console.error(`Tried: ${password}. Expected: ${serverPassword}`)
         return new Response(
