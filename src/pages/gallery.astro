@@ -3,7 +3,7 @@ import Layout from '@layouts/Layout.astro';
 import Icon from "heroicons-astro/Heroicon.astro";
 
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 
 const allImages = await getCollection('gallery');
 ---
@@ -148,7 +148,7 @@ const allImages = await getCollection('gallery');
                         <Image
                             src={image.data.src} 
                             alt={image.data.alt}
-                            class="fade-in"
+                            class={`fade-in ${image.data.direction}`}
                             style="--animation-duration: 300ms; --animation-delay: 100ms;"
                         />
                     </div>
@@ -181,6 +181,7 @@ const allImages = await getCollection('gallery');
                 class="fly-in"
                 src="https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4"
                 controls
+                oncontextmenu="return false"
             />
         </section>
     
@@ -193,10 +194,11 @@ const allImages = await getCollection('gallery');
                         href={`#image-${i}`}
                         style={`--delay-offset: ${Math.random() * 500}ms;`}
                     >
-                        <Image
+                        <Picture
                             src={image.data.src} 
                             alt={image.data.alt}
                             width={image.data.direction === 'horizontal' ? 500 : 400}
+                            formats={['avif', 'webp']}
                         />
                     </a>
                 ))
@@ -263,6 +265,7 @@ const allImages = await getCollection('gallery');
         video {
             max-width: 100%;
             height: auto;
+            aspect-ratio: auto 1600 / 1067;
         }
     }
     
@@ -317,6 +320,7 @@ const allImages = await getCollection('gallery');
             min-height: 100%;
             width: auto;
             height: auto;
+            overflow: hidden;
 
             &:has(.horizontal) {
                 height: auto;
@@ -330,11 +334,17 @@ const allImages = await getCollection('gallery');
                     height: 347px;
                 }
             }
+
+            picture {
+                pointer-events: none;
+                min-width: 100%;
+                min-height: 100%;
+            }
             
             img {
                 pointer-events: none;
-                width: 100%;
-                height: auto;
+                min-width: 100%;
+                min-height: 100%;
                 aspect-ratio: auto 1067 / 1600;
             }
 
@@ -342,16 +352,19 @@ const allImages = await getCollection('gallery');
                 grid-column-start: span 2;
 
                 img {
-                    max-width: unset;
                     width: auto;
-                    height: 100%;
                     aspect-ratio: auto 1600 / 1067;
                 }
             }
-            &.vertical:nth-child(3n - 2) {
-                grid-column-start: span 2;
-                grid-row-start: span 2;
-            }      
+            &.vertical {
+                img {
+                    height: auto;
+                }
+                &:nth-child(3n - 2) {
+                    grid-column-start: span 2;
+                    grid-row-start: span 2;
+                }  
+            }    
         }
 
         @keyframes pop-in {
@@ -401,6 +414,7 @@ const allImages = await getCollection('gallery');
             
             background-color: rgba(75, 75, 75, 0.65);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .close {
