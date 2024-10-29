@@ -167,7 +167,6 @@ const allImages = await getCollection('gallery');
         <div class="backdrop fade-in" style="--animation-duration: 100ms;" />
     </div>
     <main>
-
         <section class="hero" style="--animation-duration: 1500ms;">
             <h1 class="fly-in">The gallery</h1>
             <p class="fly-in" style="--animation-delay: 200ms;">
@@ -175,6 +174,14 @@ const allImages = await getCollection('gallery');
                 They were taken at 2 different sites. The first being Humboldt Park in Chicago and the other at 
                 the Oak Park - River Forest High School tennis courts in Oak Park, IL. 
             </p>
+        </section>
+
+        <section class="video-gallery" style="--animation-duration: 1500ms; --animation-delay: 400ms;">
+            <video
+                class="fly-in"
+                src="https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4"
+                controls
+            />
         </section>
     
         <section class="gallery" style="--base-delay: 500ms;">
@@ -251,6 +258,14 @@ const allImages = await getCollection('gallery');
         flex-direction: column;
         gap: var(--space-line);
     }
+
+    .video-gallery {
+        video {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+    
     .gallery {
         display: grid;
         grid-auto-flow: dense;

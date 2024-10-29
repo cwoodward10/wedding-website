@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
     import HamburgerMenu from "./generic/HamburgerMenu.svelte";
 
     export let page: 'home' | 'default' = 'default';
@@ -17,25 +18,28 @@
         }
     ]
 
-    let showSticky = true;
+    let hideHeader = true;
     let prevY = 0;
     let scrollY: number = 0;
     $: {
         if (scrollY < HEIGHT_HERO) {
-            showSticky = true;
+            hideHeader = true;
         } else {
-            showSticky = true && (prevY > scrollY)
+            hideHeader = true && (prevY > scrollY)
         }
         prevY = scrollY;
     }
 
-    function isCurrent(path: string) {
-        return location.pathname === path;
-    }
+    let isCurrent = () => { return false; }
+    onMount(() => {
+        isCurrent = (path: string) => {
+            return location.pathname === path;
+        }
+    })
 </script>
 
 <svelte:window bind:scrollY={scrollY} />
-<header id="top-header" class:shadow={scrollY > 5} class={page} class:hide={!showSticky}>
+<header id="top-header" class:shadow={scrollY > 5} class={page} class:hide={!hideHeader}>
     <div id="header-content" >
         <a class="logo-container" href="/">
             <span class="inner">
@@ -80,7 +84,7 @@
     width: 100%;
     position: sticky;
     top: 0;
-    
+
     display: flex;
     padding: 1.3rem var(--space-line);
 
@@ -133,7 +137,7 @@
 
 #header-content {
     margin: 0 auto;
-    height: fit-content;
+    height: 2rem;
     width: 100%;
 
     display: inline-flex;

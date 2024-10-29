@@ -16,7 +16,7 @@ const { title, page = 'default' } = Astro.props;
 		<Head {title} />
 	</head>
 	<body>
-		<TheHeader {page} client:only="svelte" />
+		<TheHeader {page} client:load />
 		<slot />
 	</body>
 </html>
