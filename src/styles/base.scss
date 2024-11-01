@@ -52,44 +52,79 @@
         font-family: var(--font-body);
     }
     a {
+        --color-link: var(--color-green);
         cursor: pointer;
+        color: var(--color-link);
+        text-decoration: none;
+        font-style: italic;
+
+        &:visited {
+            --color-link: color-mix(in srgb, var(--color-green) 80%, var(--color-orange) 20%);
+        }
 
         @include Media.at('medium') {
             &:not(:has(img)) {
                 display: inline-block;
                 position: relative;
-    
-                span.inner {
-                    display: inline-block;
-                    transition: translate 300ms ease-out;
-                }
-    
-                &::before, &::after {
-                    content: "";
-                    display: block;
-                    height: clamp(2px, 0.1rem, 4px);
-                    width: 0;
-                    background-color: var(--color-text, black);
-    
-                    position: absolute;
-                    bottom: 0;
-    
-                    transition: width 300ms ease-out;
-                }
-                &::before {
-                    left: 0;
-                }
-                &::after {
-                    right: 0;
-                }
-    
-                &:hover {
+
+                &:has(.inner) {
                     span.inner {
-                        translate: 0px clamp(-2px, -0.1rem, -4px);
+                        display: inline-block;
+                        transition: translate 300ms ease-out;
                     }
-    
+        
                     &::before, &::after {
-                        width: calc(50% + 0.1rem);
+                        content: "";
+                        display: block;
+                        height: clamp(1px, 0.1rem, 4px);
+                        width: 0;
+                        background-color: var(--color-link, black);
+        
+                        position: absolute;
+                        bottom: 0;
+        
+                        transition: width 300ms ease-out;
+                    }
+                    &::before {
+                        left: 0;
+                    }
+                    &::after {
+                        right: 0;
+                    }
+        
+                    &:hover {
+                        span.inner {
+                            translate: 0px clamp(-2px, -0.1rem, -4px);
+                        }
+        
+                        &::before, &::after {
+                            width: calc(50% + 0.1rem);
+                        }
+                    }
+                }
+                &:not(:has(.inner)) {
+                    &::after {
+                        content: "";
+                        display: block;
+                        height: clamp(1px, 0.05rem, 4px);
+                        width: 0;
+                        background-color: var(--color-link, black);
+        
+                        position: absolute;
+                        bottom: 0.1rem;
+        
+                        transition: width 300ms ease-out;
+                    }
+                    &::after {
+                        right: 0;
+                        width: 0%;
+                    }
+        
+                    &:hover {
+                        &::before, &::after {
+                            left: 0;
+                            width: 100%;
+                        }
                     }
                 }
             }

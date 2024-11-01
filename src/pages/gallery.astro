@@ -5,6 +5,7 @@ import Icon from "heroicons-astro/Heroicon.astro";
 import { getCollection } from 'astro:content';
 import { Image, Picture } from 'astro:assets';
 
+const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4';
 const allImages = await getCollection('gallery');
 ---
 
@@ -125,13 +126,37 @@ const allImages = await getCollection('gallery');
 
     let initialLoad = true;
     const images = document.querySelectorAll('.gallery .image');
-    const observer = new IntersectionObserver((e) => {
+    const observerImages = new IntersectionObserver((e) => {
         const visible = e.filter(entry => entry.isIntersecting);
         visible.forEach(image => (image.target as HTMLAnchorElement)?.classList?.toggle(initialLoad ? SHOW_CLASS : SHOW_CLASS_BF, true));
 
         initialLoad = false;
+    }, { threshold: 0 })
+    images.forEach(i => observerImages.observe(i));
+
+    const imagesText = document.querySelector('.text-section.gallery-section');
+    const observerText = new IntersectionObserver((e) => {
+        console.log(e)
+        const visible = e.filter(entry => entry.isIntersecting);
+        visible.forEach(v => {
+            v.target.classList.add(SHOW_CLASS)
+        })
     })
-    images.forEach(i => observer.observe(i));
+    if (imagesText) {
+        console.log(imagesText)
+        observerText.observe(imagesText);
+    }
+
+    const videos = document.querySelectorAll('video');
+    videos.forEach(v => {
+        if (v.readyState >= 2) {
+            v.classList.add('loaded');
+        } else {
+            v.addEventListener('loadeddata', (e) => {
+                v.classList.add('loaded');
+            })
+        }
+    })
 
     const currentHash = location.hash.replace("#", '');
     showLightbox(currentHash);
@@ -167,22 +192,35 @@ const allImages = await getCollection('gallery');
         <div class="backdrop fade-in" style="--animation-duration: 100ms;" />
     </div>
     <main>
-        <section class="hero" style="--animation-duration: 1500ms;">
-            <h1 class="fly-in">The gallery</h1>
-            <p class="fly-in" style="--animation-delay: 200ms;">
-                Our engagement photo shoot was shot by <a href="https://noellethiesco.pic-time.com/-nataliechris/gallery">Noelle Thies</a>. 
-                They were taken at 2 different sites. The first being Humboldt Park in Chicago and the other at 
-                the Oak Park - River Forest High School tennis courts in Oak Park, IL. 
+        <section class="text-section" style="--animation-duration: 1500ms;">
+            <h1 class="fly-in" style="--animation-delay: 100ms;">
+                Our story
+            </h1>
+            <p class="fly-in" style="--animation-delay: 300ms;">
+                When we first met in Seattle in September of 2020, the world was in a very different place. And so were we. Chris had just, a month and a half prior, moved to Seattle. 
+                And Natalie, at the time at least, was trying to leave it. She did eventually, moving to Chicago. There was no way we could have known that Chris would still be along 
+                along for the ride. Or, that almost 5 years later, they'd be getting married. We'll let Raven, of <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a>
+                tell a little bit of that story. 
             </p>
         </section>
 
-        <section class="video-gallery" style="--animation-duration: 1500ms; --animation-delay: 400ms;">
+        <section class="video-gallery fly-in" style="--animation-duration: 1500ms; --animation-delay: 500ms;">
             <video
-                class="fly-in"
-                src="https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4"
+                src={videoUrl}
                 controls
                 oncontextmenu="return false"
             />
+        </section>
+
+        <section class="text-section gallery-section" style="--animation-duration: 1500ms; margin-top: 2rem;">
+            <h1 class="fly-in" style="--animation-delay: 700ms;">
+                A little bit of us
+            </h1>
+            <p class="fly-in" style="--animation-delay: 900ms;">
+                It was important to us that our engagement photography capture who are we are a couple. Both tennis and the outdoors, as represented by Chicago's <a href="https://en.wikipedia.org/wiki/Humboldt_Park,_Chicago" target="_blank">Humboldt Park</a>, 
+                have played large roles in our relationship and our shared hobbies. (Eating might be the other big one.) We want to send a big thank you to Noelle, of <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a>, 
+                for so beautifully capturing that little bit of who we are. 
+            </p>
         </section>
     
         <section class="gallery" style="--base-delay: 500ms;">
@@ -251,21 +289,49 @@ const allImages = await getCollection('gallery');
     }
 
     p {
-        max-width: 800px;
+        max-width: 60rem;
         text-wrap: pretty;
     }
 
-    .hero {
+    .text-section {
         display: flex;
         flex-direction: column;
         gap: var(--space-line);
+
+        &.gallery-section {
+            &:not(.show) {
+                * {
+                    display: none;
+                    content-visibility: hidden;
+                }
+            }
+        }
     }
 
     .video-gallery {
+        height: fit-content;
+        background-color: var(--color-green);
+        transition: background-color 200ms ease-in-out;
+
+        &:has(video.loaded) {
+            background-color: transparent;
+        }
+
         video {
             max-width: 100%;
             height: auto;
             aspect-ratio: auto 1600 / 1067;
+            border-radius: 3px;
+            overflow: hidden;
+            pointer-events: none;
+
+            opacity: 0;
+            transition: opacity 200ms ease-in-out;
+
+            &.loaded {
+                opacity: 1;
+                pointer-events: all;
+            }
         }
     }
     
@@ -320,6 +386,7 @@ const allImages = await getCollection('gallery');
             min-height: 100%;
             width: auto;
             height: auto;
+            border-radius: 3px;
             overflow: hidden;
 
             &:has(.horizontal) {
@@ -360,10 +427,12 @@ const allImages = await getCollection('gallery');
                 img {
                     height: auto;
                 }
-                &:nth-child(3n - 2) {
-                    grid-column-start: span 2;
-                    grid-row-start: span 2;
-                }  
+                @include Media.at('large') {
+                    &:nth-child(3n - 2) {
+                        grid-column-start: span 2;
+                        grid-row-start: span 2;
+                    }  
+                }
             }    
         }
 
@@ -412,7 +481,7 @@ const allImages = await getCollection('gallery');
             height: 100%;
             width: 100%;
             
-            background-color: rgba(75, 75, 75, 0.65);
+            background-color: rgba(75, 75, 75, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -479,13 +548,40 @@ const allImages = await getCollection('gallery');
         align-items: center;
         gap: var(--space-line);
 
+        .lightbox {
+            --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
+
+            --max-width: calc(100vw - 6rem);
+            --max-height: calc(100vh - 6rem);
+
+            background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
+
+            border-radius: 4px;
+            overflow: hidden;
+
+            &:has(.vertical) {
+                max-width: 1067px;
+                max-height: 1600px;
+
+                height: var(--max-height);
+                aspect-ratio: 1067 / 1600;
+            }
+            &:has(.horizontal) {
+                max-width: 1600px;
+                max-height: 1067px;
+
+                width: var(--max-width);
+                aspect-ratio: 1600 / 1067;
+            }
+        }
+
         img {
             z-index: 10;
             isolation: isolate;
-            max-width: calc(100vw - 6rem);
-            max-height: calc(100vh - 6rem);
             height: auto;
             width: auto;
+            max-width: var(--max-width);
+            max-height: var(--max-height);
         }
 
         .nav-container {

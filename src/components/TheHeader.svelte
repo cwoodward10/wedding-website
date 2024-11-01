@@ -150,6 +150,7 @@
         font-size: 1.5rem;
         line-height: 125%;
         text-decoration: none;
+        font-style: normal;
     }
 
     @include Media.until('medium') {
