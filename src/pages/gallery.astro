@@ -485,8 +485,8 @@ const allImages = await getCollection('gallery');
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
+        height: 100vh;
+        width: 100vw;
         overflow: hidden;
 
         .backdrop {
@@ -549,6 +549,9 @@ const allImages = await getCollection('gallery');
         }
     }
     .lightbox-container .content {
+        --max-width: calc(100vw - 6rem);
+        --max-height: calc(100vh - 6rem);
+
         position: fixed;
         top: 50%;
         left: 50%;
@@ -565,27 +568,30 @@ const allImages = await getCollection('gallery');
         .lightbox {
             --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
 
-            --max-width: calc(100vw - 6rem);
-            --max-height: calc(100vh - 6rem);
-
             background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
 
             border-radius: 4px;
+            
             overflow: hidden;
 
             &:has(.vertical) {
-                max-width: 1067px;
-                max-height: 1600px;
-
-                height: var(--max-height);
+                --aspect: calc(1067 / 1600);
                 aspect-ratio: 1067 / 1600;
             }
             &:has(.horizontal) {
-                max-width: 1600px;
-                max-height: 1067px;
-
-                width: var(--max-width);
+                --aspect: calc(1600 / 1067);
                 aspect-ratio: 1600 / 1067;
+            }
+
+            @media (orientation: portrait) {
+                --real-max-width: min(1067px, var(--max-width));
+                --real-max-height: min(var(--max-height), calc(var(--real-max-width) / var(--aspect)));
+                height: var(--real-max-height);
+            }
+            @media (orientation: landscape) {
+                --real-max-height: min(1067px, var(--max-height));
+                --real-max-width: min(var(--max-width), calc(var(--real-max-height) * var(--aspect)));
+                width: var(--real-max-width);
             }
         }
 
