@@ -152,7 +152,7 @@ const allImages = await getCollection('gallery');
         if (v.readyState >= 2) {
             v.classList.add('loaded');
         } else {
-            v.addEventListener('loadeddata', (e) => {
+            v.addEventListener('loadedmetadata', (e) => {
                 v.classList.add('loaded');
             })
         }
@@ -209,6 +209,7 @@ const allImages = await getCollection('gallery');
                 src={videoUrl}
                 controls
                 oncontextmenu="return false"
+                poster="https://meta.vidflow.co/studio/o3yfykia/media/zsg0fqjf/ScreenShot2024-10-23at120944AM.png?width=960&height=960&optimize=image"
             />
         </section>
 
@@ -389,7 +390,11 @@ const allImages = await getCollection('gallery');
             border-radius: 3px;
             overflow: hidden;
 
-            &:has(.horizontal) {
+            &.horizontal {
+                picture {
+                    aspect-ratio: 1600 / 1067;
+                }
+
                 height: auto;
                 @include Media.at('medium') {
                     height: 349px;
@@ -406,26 +411,35 @@ const allImages = await getCollection('gallery');
                 pointer-events: none;
                 min-width: 100%;
                 min-height: 100%;
+                display: flex;
+                flex-shrink: 0;
+                justify-content: center;
+                align-items: center;
             }
             
             img {
+                flex-shrink: 0;
                 pointer-events: none;
                 min-width: 100%;
                 min-height: 100%;
-                aspect-ratio: auto 1067 / 1600;
+                max-width: none;
+                max-height: none;
             }
 
             &.horizontal {
                 grid-column-start: span 2;
 
                 img {
+                    height: 100%;
                     width: auto;
-                    aspect-ratio: auto 1600 / 1067;
+                    aspect-ratio: 1600 / 1067;
                 }
             }
             &.vertical {
                 img {
+                    width: 100%;
                     height: auto;
+                    aspect-ratio: 1067 / 1600;
                 }
                 @include Media.at('large') {
                     &:nth-child(3n - 2) {
