@@ -2,11 +2,11 @@
 import Layout from '@layouts/Layout.astro';
 import Icon from "heroicons-astro/Heroicon.astro";
 
-import { getCollection } from 'astro:content';
 import { Image, Picture } from 'astro:assets';
 
+import { GalleryContent } from 'src/modules/galleryContent';
+
 const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4';
-const allImages = await getCollection('gallery');
 ---
 
 <script>
@@ -168,12 +168,12 @@ const allImages = await getCollection('gallery');
     <div class="lightbox-container">
         <div class="content">
             {
-                allImages.map((image: any, i: number) => (
+                GalleryContent.map((image: any, i: number) => (
                     <div id={`image-${i}-lightbox`} class="lightbox">
                         <Image
-                            src={image.data.src} 
-                            alt={image.data.alt}
-                            class={`fade-in ${image.data.direction}`}
+                            src={image.src} 
+                            alt={image.alt}
+                            class={`fade-in ${image.direction}`}
                             style="--animation-duration: 300ms; --animation-delay: 100ms;"
                         />
                     </div>
@@ -192,16 +192,10 @@ const allImages = await getCollection('gallery');
         <div class="backdrop fade-in" style="--animation-duration: 100ms;" />
     </div>
     <main>
-        <section class="text-section" style="--animation-duration: 1500ms;">
+        <section>
             <h1 class="fly-in" style="--animation-delay: 100ms;">
-                Our story
+                Gallery
             </h1>
-            <p class="fly-in" style="--animation-delay: 300ms;">
-                When we first met in Seattle in September of 2020, the world was in a very different place. And so were we. Chris had just, a month and a half prior, moved to Seattle. 
-                And Natalie, at the time at least, was trying to leave it. She did eventually, moving to Chicago. There was no way we could have known that Chris would still be along 
-                along for the ride. Or, that almost 5 years later, they'd be getting married. We'll let Raven, of <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a>
-                tell a little bit of that story. 
-            </p>
         </section>
 
         <section class="video-gallery fly-in" style="--animation-duration: 1500ms; --animation-delay: 500ms;">
@@ -212,36 +206,36 @@ const allImages = await getCollection('gallery');
                 poster="https://meta.vidflow.co/studio/o3yfykia/media/zsg0fqjf/ScreenShot2024-10-23at120944AM.png?width=960&height=960&optimize=image"
             />
         </section>
-
-        <section class="text-section gallery-section" style="--animation-duration: 1500ms; margin-top: 2rem;">
-            <h1 class="fly-in" style="--animation-delay: 700ms;">
-                A little bit of us
-            </h1>
-            <p class="fly-in" style="--animation-delay: 900ms;">
-                It was important to us that our engagement photography capture who are we are a couple. Both tennis and the outdoors, as represented by Chicago's <a href="https://en.wikipedia.org/wiki/Humboldt_Park,_Chicago" target="_blank">Humboldt Park</a>, 
-                have played large roles in our relationship and our shared hobbies. (Eating might be the other big one.) We want to send a big thank you to Noelle, of <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a>, 
-                for so beautifully capturing that little bit of who we are. 
-            </p>
-        </section>
     
         <section class="gallery" style="--base-delay: 500ms;">
             {
-                allImages.map((image: any, i: number) => (
+                GalleryContent.map((image: any, i: number) => (
                     <a 
                         id={`image-${i}`} 
-                        class={`image ${image.data.direction}`} 
+                        class={`image ${image.direction}`} 
                         href={`#image-${i}`}
                         style={`--delay-offset: ${Math.random() * 500}ms;`}
                     >
                         <Picture
-                            src={image.data.src} 
-                            alt={image.data.alt}
-                            width={image.data.direction === 'horizontal' ? 500 : 400}
+                            src={image.src} 
+                            alt={image.alt}
+                            width={image.direction === 'horizontal' ? 500 : 400}
                             formats={['avif', 'webp']}
                         />
                     </a>
                 ))
             }
+        </section>
+
+        <section>
+            <h2>Credits</h2>
+            <p>
+                Thank you to <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a> for the videography! 
+                And thank you to <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a> for the photography!.
+            </p>
+            <p>
+                
+            </p>
         </section>
     </main>
 </Layout>
@@ -321,6 +315,7 @@ const allImages = await getCollection('gallery');
         video {
             max-width: 100%;
             height: auto;
+            width: 100%;
             aspect-ratio: auto 1600 / 1067;
             border-radius: 3px;
             overflow: hidden;
@@ -442,7 +437,7 @@ const allImages = await getCollection('gallery');
                     aspect-ratio: 1067 / 1600;
                 }
                 @include Media.at('large') {
-                    &:nth-child(3n - 2) {
+                    &:nth-child(4n - 3) {
                         grid-column-start: span 2;
                         grid-row-start: span 2;
                     }  
