@@ -14,7 +14,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     const SHOW_CLASS_BF = 'show-below-fold';
 
     const imageLinks = document.querySelectorAll('a.image');
-    const lightboxes = document.querySelectorAll('.lightbox');
+    const lightboxes = document.querySelectorAll('.lightbox-image');
 
     const imageCount = lightboxes.length;
 
@@ -34,7 +34,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     const showLightbox = (id: number | string) => {
         history.pushState({}, '', `${location.origin}/gallery#${id}`);
 
-        const allLightboxImages = document.querySelectorAll('.lightbox-container .lightbox.show');
+        const allLightboxImages = document.querySelectorAll('.lightbox-container .lightbox-image.show');
         allLightboxImages?.forEach(i => {
             i.classList.toggle(SHOW_CLASS, false);
         })
@@ -167,18 +167,19 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 <Layout title='Image Gallery'>
     <div class="lightbox-container">
         <div class="content">
+            <div class="lightbox">
             {
                 GalleryContent.map((image: any, i: number) => (
-                    <div id={`image-${i}-lightbox`} class="lightbox">
                         <Image
                             src={image.src} 
                             alt={image.alt}
-                            class={`fade-in ${image.direction}`}
+                            id={`image-${i}-lightbox`}
+                            class={`lightbox-image fade-in ${image.direction}`}
                             style="--animation-duration: 300ms; --animation-delay: 100ms;"
                         />
-                    </div>
                 ))
             }
+            </div>
             <div class="nav-container">
                 <button class="nav previous" aria-name="previous">
                     <Icon iconCode="chevron-left" iconStyle="outline" />
@@ -227,14 +228,11 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             }
         </section>
 
-        <section>
+        <section class="credits">
             <h2>Credits</h2>
             <p>
                 Thank you to <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a> for the videography! 
-                And thank you to <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a> for the photography!.
-            </p>
-            <p>
-                
+                And thank you to <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a> for the photography!
             </p>
         </section>
     </main>
@@ -457,6 +455,10 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         }
     }
 
+    .credits {
+        margin-top: var(--space-small) !important;
+    }
+
     :global(html:has(.lightbox.show)) {
         body {
             overflow: hidden;
@@ -467,10 +469,11 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     }
 
     .lightbox-container:not(.show),
-    .lightbox:not(.show) {
+    .lightbox-image:not(.show) {
             display: none;
             content-visibility: hidden;
             visibility: hidden;
+            opacity: 0;
     }
 
     .lightbox-container {
@@ -483,6 +486,10 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         height: 100vh;
         width: 100vw;
         overflow: hidden;
+
+        opacity: 1;
+
+        transition: all 300ms ease-in-out allow-discrete;
 
         .backdrop {
             z-index: 5;
@@ -544,8 +551,8 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         }
     }
     .lightbox-container .content {
-        --max-width: calc(100vw - 6rem);
-        --max-height: calc(100vh - 6rem);
+        --max-width: calc(100vw - 8rem);
+        --max-height: calc(100vh - 8rem);
 
         position: fixed;
         top: 50%;
@@ -569,11 +576,17 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             
             overflow: hidden;
 
-            &:has(.vertical) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: all 500ms ease-in-out;
+
+            &:has(.show.vertical) {
                 --aspect: calc(1067 / 1600);
                 aspect-ratio: 1067 / 1600;
             }
-            &:has(.horizontal) {
+            &:has(.show.horizontal) {
                 --aspect: calc(1600 / 1067);
                 aspect-ratio: 1600 / 1067;
             }
@@ -590,7 +603,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             }
         }
 
-        img {
+        .lightbox-image {
             z-index: 10;
             isolation: isolate;
             height: auto;

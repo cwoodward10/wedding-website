@@ -7,7 +7,7 @@
 
     const HEIGHT_HERO = 20;
 
-    const ROUTES: {name: string, route: string}[] = [
+    const ROUTES: {name: string, route: string, external?: boolean}[] = [
         {
             name: 'Home',
             route: '/'
@@ -15,6 +15,10 @@
         {
             name: 'Gallery',
             route: '/gallery'
+        },{
+            name: 'Registry',
+            route: 'https://www.zola.com/registry/natalieandchriswedding2025',
+            external: true
         }
     ]
 
@@ -30,7 +34,7 @@
         prevY = scrollY;
     }
 
-    let isCurrent = () => { return false; }
+    let isCurrent = (path: string): boolean => {};
     onMount(() => {
         isCurrent = (path: string) => {
             return location.pathname === path;
@@ -52,6 +56,7 @@
                 <li class="ham-route">
                     <a 
                         href={route.route} 
+                        target={route.external ? "_blank" : ""}
                         data-astro-prefetch
                         class:current={isCurrent(route.route)}
                     >
@@ -64,7 +69,12 @@
         <nav class="link-menu-container">
             {#each ROUTES as route}
             <li class="nav-route">
-                <a href={route.route} data-astro-prefetch>
+                <a 
+                    href={route.route} 
+                    class={route.external ? "external" : ""} 
+                    target={route.external ? "_blank" : ""} 
+                    data-astro-prefetch
+                >
                     <span class="inner">
                         {route.name}
                     </span>
@@ -81,7 +91,7 @@
 #top-header {
     z-index: 100;
 
-    width: 100%;
+    width: 100vw;
     position: sticky;
     top: 0;
 
@@ -109,6 +119,12 @@
                 content-visibility: hidden;
             }
         }
+        
+        .link-menu-container a {
+            &::before, &::after {
+                background-color: var(--color-white);
+            }
+        }
     }
 
     transform: translateY(0%);
@@ -132,6 +148,27 @@
         &.shadow {
             box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
         }
+    }
+
+    li a.external {
+        .inner {
+            display: inline-flex;
+            align-items: center;
+            
+            &::after {
+                content: "";
+                display: inline-block;
+                background-image: url('../assets/images/external-link.svg');
+                background-size: contain;
+                width: auto;
+                height: 1.5rem;
+                aspect-ratio: 1 / 1;
+                margin-left: 0.25rem;
+            }
+        }
+    }
+    &.home li a.external .inner::after {
+        filter: brightness(100);
     }
 }
 
