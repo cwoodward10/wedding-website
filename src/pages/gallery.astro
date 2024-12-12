@@ -242,6 +242,8 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     @use '@styles/media.scss' as Media;
 
     main {
+        --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
+        
         scroll-behavior: smooth;
 
         section {
@@ -350,6 +352,8 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             scale: 0;
             opacity: 0;
             content-visibility: auto;
+
+            background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
 
             transition: transform 200ms ease-in-out;
 
@@ -568,8 +572,6 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         gap: var(--space-line);
 
         .lightbox {
-            --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
-
             background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
 
             border-radius: 4px;
