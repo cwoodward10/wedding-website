@@ -15,10 +15,10 @@ const seed = Math.ceil(Math.random() * 2);
 	<main style="--animation-timing-function: ease-in-out">
 		<div class="image-container" style="--animation-delay: 100ms; --animation-duration: 500ms;">
 			{seed === 1 ?
-				<Image src={imageMobile1} alt={alt} class="mb one" /> :
-				<Image src={imageMobile2} alt={alt} class="mb two" />
+				<Image src={imageMobile1} alt={alt} class="mb one" loading="eager" /> :
+				<Image src={imageMobile2} alt={alt} class="mb two" loading="eager" />
 			}
-			<Image src={imageDesktop} alt={alt} class="dk main" />
+			<Image src={imageDesktop} alt={alt} class="dk main" loading="eager" />
 		</div>
 
 		<section class="text-container" style="--animation-delay: 1000ms;">
@@ -94,7 +94,7 @@ const seed = Math.ceil(Math.random() * 2);
 		height: var(--container-height);
 		width: var(--container-width);
 		
-		max-height: calc(100dvh - 8rem);
+		max-height: calc(100dvh - 9rem);
 		max-width: 100%;
 		overflow: hidden;
 		

@@ -158,6 +158,15 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         }
     })
 
+    const credits = document.querySelector('.credits');
+    if (credits) {     
+        const creditsObserver = new IntersectionObserver((e) => {
+            const credits = e[0];
+            credits?.isIntersecting && credits.target?.classList.toggle('show', true);
+        }) 
+        creditsObserver.observe(credits);
+    }
+
     const currentHash = location.hash.replace("#", '');
     showLightbox(currentHash);
 
@@ -229,11 +238,13 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         </section>
 
         <section class="credits">
-            <h2>Credits</h2>
-            <p>
-                Thank you to <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a> for the videography! 
-                And thank you to <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a> for the photography!
-            </p>
+            <div class="content fade-in" style="--animation-delay: 300ms;">
+                <h2>Credits</h2>
+                <p>
+                    Thank you to <a href="https://aworldawayfilms.com/" target="_blank">A World Away Films</a> for the videography! 
+                    And thank you to <a href="https://noellethies.co/" target="_blank">Noelle Thies Photography</a> for the photography!
+                </p>
+            </div>
         </section>
     </main>
 </Layout>
@@ -273,7 +284,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         
         @include Media.at('medium') {
             gap: var(--space-small);
-            padding: var(--space-large) 0 var(--space-large);
+            padding: var(--space-medium) 0 var(--space-large);
         }
 
         &:has(.lightbox.show) {
@@ -377,6 +388,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            flex-shrink: 0;
             
             cursor: pointer;
             
@@ -461,6 +473,11 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 
     .credits {
         margin-top: var(--space-small) !important;
+
+        &:not(.show) .content {
+            display: none;
+            content-visibility: auto;
+        }
     }
 
     :global(html:has(.lightbox.show)) {
