@@ -125,27 +125,19 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     nextBtn?.addEventListener('click', handleNext);
 
     let initialLoad = true;
-    const images = document.querySelectorAll('.gallery .image');
+    const images = document.querySelectorAll('.gallery .image-container');
     const observerImages = new IntersectionObserver((e) => {
         const visible = e.filter(entry => entry.isIntersecting);
-        visible.forEach(image => (image.target as HTMLAnchorElement)?.classList?.toggle(initialLoad ? SHOW_CLASS : SHOW_CLASS_BF, true));
+        visible.forEach(container => {
+            const image = (container.target as HTMLElement).querySelector('a.image')
+            image?.classList?.toggle(initialLoad ? SHOW_CLASS : SHOW_CLASS_BF, true)
+        });
 
-        initialLoad = false;
+        if (visible.length > 1 && !initialLoad) {
+            initialLoad = false;
+        }
     }, { threshold: 0 })
     images.forEach(i => observerImages.observe(i));
-
-    const imagesText = document.querySelector('.text-section.gallery-section');
-    const observerText = new IntersectionObserver((e) => {
-        console.log(e)
-        const visible = e.filter(entry => entry.isIntersecting);
-        visible.forEach(v => {
-            v.target.classList.add(SHOW_CLASS)
-        })
-    })
-    if (imagesText) {
-        console.log(imagesText)
-        observerText.observe(imagesText);
-    }
 
     const videos = document.querySelectorAll('video');
     videos.forEach(v => {
@@ -220,19 +212,23 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         <section class="gallery" style="--base-delay: 500ms;">
             {
                 GalleryContent.map((image: any, i: number) => (
-                    <a 
-                        id={`image-${i}`} 
-                        class={`image ${image.direction}`} 
-                        href={`#image-${i}`}
-                        style={`--delay-offset: ${Math.random() * 500}ms;`}
+                    <div
+                    class={`image-container ${image.direction}`} 
                     >
-                        <Picture
-                            src={image.src} 
-                            alt={image.alt}
-                            width={image.direction === 'horizontal' ? 500 : 400}
-                            formats={['avif', 'webp']}
-                        />
-                    </a>
+                        <a 
+                            id={`image-${i}`}
+                            class="image"
+                            href={`#image-${i}`}
+                            style={`--delay-offset: ${Math.random() * 500}ms;`}
+                        >
+                            <Picture
+                                src={image.src} 
+                                alt={image.alt}
+                                width={image.direction === 'horizontal' ? 600 : 400}
+                                formats={['avif', 'webp']}
+                            />
+                        </a>
+                    </div>
                 ))
             }
         </section>
@@ -350,6 +346,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 
         @include Media.at('medium') {
             grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 320px;
         }
         @include Media.at('large') {
             grid-template-columns: repeat(4, 1fr);
@@ -358,85 +355,85 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
             grid-template-columns: repeat(5, 1fr);
         }
         
-        
-        .image {
-            scale: 0;
-            opacity: 0;
-            content-visibility: auto;
-
-            background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
-
-            transition: transform 200ms ease-in-out;
-
-            &:hover {
-                box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
-                transform: scale(1.01);
-            }
-            
-            &.show {
-                --animation-delay: calc(var(--base-delay, 0) + var(--delay-offset, 0));
-                --animation-duration: 1000ms;
-            }
-            &.show-below-fold {
-                --animation-delay: 100ms;
-                --animation-duration: 700ms;
-
-            }
-            animation: pop-in var(--animation-duration) cubic-bezier(.78,.04,.74,1.17) var(--animation-delay) 1 normal forwards;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            
-            cursor: pointer;
-            
+        .image-container {
             min-width: 100%;
             min-height: 100%;
             width: auto;
-            height: auto;
-            border-radius: 3px;
-            overflow: hidden;
-
-            &.horizontal {
-                picture {
-                    aspect-ratio: 1600 / 1067;
-                }
-
-                height: auto;
-                @include Media.at('medium') {
-                    height: 349px;
-                }
-                @include Media.at('large') {
-                    height: 363px;
-                }
-                @include Media.at('extra-large') {
-                    height: 347px;
-                }
-            }
-
-            picture {
-                pointer-events: none;
-                min-width: 100%;
-                min-height: 100%;
-                display: flex;
-                flex-shrink: 0;
+            height: auto;   
+            
+            .image {
+                display: none;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
-            }
-            
-            img {
                 flex-shrink: 0;
-                pointer-events: none;
-                min-width: 100%;
-                min-height: 100%;
-                max-width: none;
-                max-height: none;
+                
+                cursor: pointer;
+                
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 3px;
+                overflow: hidden;
+                
+                scale: 0;
+                opacity: 0;
+                content-visibility: auto;
+                
+                background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
+                
+                transition: transform 200ms ease-in-out;
+                &:hover {
+                    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+                    transform: scale(1.01);
+                }
+                
+                &.show {
+                    --animation-delay: calc(var(--base-delay, 0) + var(--delay-offset, 0));
+                    --animation-duration: 1000ms;
+                    display: flex;
+                }
+                &.show-below-fold {
+                    --animation-delay: 100ms;
+                    --animation-duration: 700ms;
+                    display: flex;
+
+                }
+                &.show, &.show-below-fold {
+                    animation: pop-in var(--animation-duration) cubic-bezier(.78,.04,.74,1.17) var(--animation-delay) 1 normal forwards;
+                }
+
+                picture {
+                    pointer-events: none;
+                    min-width: 100%;
+                    min-height: 100%;
+                    max-width: none;
+                    max-height: none;
+                    
+                    display: flex;
+                    flex-shrink: 0;
+                    justify-content: center;
+                    align-items: center;
+                }
+                
+                img {
+                    flex-shrink: 0;
+                    pointer-events: none;
+                    min-width: 100%;
+                    min-height: 100%;
+                    max-width: none;
+                    max-height: none;
+                }  
             }
 
             &.horizontal {
                 grid-column-start: span 2;
+
+                height: auto;
+
+                picture {
+                    aspect-ratio: 1600 / 1067;
+                    max-height: 100%;
+                }
 
                 img {
                     height: 100%;
@@ -445,6 +442,9 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
                 }
             }
             &.vertical {
+                picture {
+                    max-width: 100%;
+                }
                 img {
                     width: 100%;
                     height: auto;
@@ -456,17 +456,17 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
                         grid-row-start: span 2;
                     }  
                 }
-            }    
-        }
+            }  
 
-        @keyframes pop-in {
-            from {
-                scale: 0.5;
-                opacity: 0;
-            }
-            to {
-                scale: 1;
-                opacity: 1;
+            @keyframes pop-in {
+                from {
+                    scale: 0.5;
+                    opacity: 0;
+                }
+                to {
+                    scale: 1;
+                    opacity: 1;
+                }
             }
         }
     }
