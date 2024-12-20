@@ -16,10 +16,10 @@ const { title, page = 'default' } = Astro.props;
 <html lang="en">
 	<head>
 		<Head {title} />
+		<Analytics />
 	</head>
 	<body>
 		<TheHeader {page} client:load />
 		<slot />
-		<Analytics />
 	</body>
 </html>
