@@ -167,7 +167,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 <Layout title='Image Gallery'>
     <div class="lightbox-container">
         <div class="content">
-            <div class="lightbox">
+            <div class="lightbox animate-gradient">
             {
                 GalleryContent.map((image: any, i: number) => (
                         <Image
@@ -243,38 +243,6 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 
     main {
         --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
-
-        scroll-behavior: smooth;
-
-        section {
-            margin: auto;
-            
-            width: 100%;
-            max-width: 400px;
-            @include Media.at('medium') {
-                max-width: 720px;
-            }
-            @include Media.at('large') {
-                max-width: 1000px;
-            }
-            @include Media.at('extra-large') {
-                max-width: 1200px;
-            }
-        }
-
-
-        margin: auto;
-
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-line);
-
-        padding: 1.5rem var(--space-line) var(--space-large);
-        
-        @include Media.at('medium') {
-            gap: var(--space-small);
-            padding: var(--space-large) 0 var(--space-large);
-        }
 
         &:has(.lightbox.show) {
             section {
@@ -574,6 +542,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 
         .lightbox {
             background: linear-gradient(45deg, var(--transparent-green), color-mix(in srgb, gray 30%, transparent 50%), var(--transparent-green));
+            background-size: 200% 200% !important;
 
             border-radius: 4px;
             
@@ -616,23 +585,16 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
         }
 
         .nav-container {
-            width: 100%;
+            z-index: 2000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+
+            width: calc(100% + 5.5rem);
+
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: var(--space-line);
-
-            @include Media.at('medium') {
-                z-index: 2000;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                translate: -50% -50%;
-
-                width: calc(100% + 5.5rem);
-
-                justify-content: space-between;
-            }
+            justify-content: space-between;
 
             button {
                 position: relative;

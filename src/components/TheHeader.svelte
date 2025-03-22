@@ -9,8 +9,12 @@
 
     const ROUTES: {name: string, route: string, external?: boolean}[] = [
         {
-            name: 'Home',
-            route: '/'
+            name: 'Wedding',
+            route: '/wedding-info'
+        },
+        {
+            name: 'Travel',
+            route: '/travel-info'
         },
         {
             name: 'Gallery',
@@ -34,7 +38,7 @@
         prevY = scrollY;
     }
 
-    let isCurrent = (path: string): boolean => {};
+    let isCurrent: (path: string) => boolean;
     onMount(() => {
         isCurrent = (path: string) => {
             return location.pathname === path;
@@ -58,7 +62,7 @@
                         href={route.route} 
                         target={route.external ? "_blank" : ""}
                         data-astro-prefetch
-                        class:current={isCurrent(route.route)}
+                        class:current={isCurrent ? isCurrent(route.route) : false}
                     >
                         {route.name}
                     </a>
@@ -89,14 +93,19 @@
 @use '@styles/media.scss' as Media;
 
 #top-header {
+
     z-index: 100;
 
     width: 100vw;
     position: sticky;
     top: 0;
 
+    padding: 0.75rem var(--space-line);
+    @include Media.at('small') {
+        padding: 1.3rem var(--space-line);
+    }
+    
     display: flex;
-    padding: 1.3rem var(--space-line);
 
     background-color: var(--color-white);
 
@@ -110,16 +119,6 @@
 
         background-color: transparent;
 
-        #header-content {
-            justify-content: flex-end;
-            align-items: flex-end;
-
-            .logo-container {
-                display: none;
-                content-visibility: hidden;
-            }
-        }
-        
         .link-menu-container a {
             &::before, &::after {
                 background-color: var(--color-white);
@@ -134,20 +133,19 @@
         transform: translateY(-100%);
     }
 
-    @include Media.until('small') {
+    &.shadow {
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    @include Media.until('medium') {
         position: fixed;
         top: 0;
         left: 0;
-
-        background-color: transparent;
     }
 
     @include Media.at('medium') {
         padding: 1rem var(--space-small);
 
-        &.shadow {
-            box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
-        }
     }
 
     li a.external {
@@ -191,13 +189,7 @@
     }
 
     @include Media.until('medium') {
-        justify-content: flex-end;
-        align-items: flex-end;
-
-        .logo-container {
-            display: none;
-            content-visibility: hidden;
-        }
+        justify-content: space-between;
     }
 
     .link-menu-container {
@@ -205,7 +197,7 @@
         content-visibility: hidden;
         align-items: center;
     }
-    @include Media.at('small') {
+    @include Media.at('medium') {
         .hamburger-container {
             display: none;
             content-visibility: hidden;
