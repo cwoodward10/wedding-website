@@ -203,9 +203,9 @@
                 color: var(--color-text);
             }
 
-            padding: var(--space-tiny) var(--space-line) calc(1.2 * var(--space-tiny));
+            padding: calc(1.2 * var(--space-tiny)) var(--space-line) var(--space-tiny);
             @include Media.at('medium') {
-                padding: var(--space-base) var(--space-small) calc(1.2 * var(--space-base));
+                padding: calc(1.2 * var(--space-base)) var(--space-small) var(--space-base);
             }
 
             font-family: var(--font-body);
