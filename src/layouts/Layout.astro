@@ -1,5 +1,6 @@
 ---
 import Head from '@components/infra/Head.astro';
+import TheFooter from '@components/infra/TheFooter.astro';
 import TheHeader from '@components/TheHeader.svelte';
 
 interface Props {
@@ -18,6 +19,9 @@ const { title, page = 'default' } = Astro.props;
 	<body>
 		<TheHeader {page} client:load />
 		<slot />
+        {
+            page !== 'home' && <TheFooter />
+        }
 	</body>
 </html>
 
@@ -25,8 +29,6 @@ const { title, page = 'default' } = Astro.props;
 	@use '@styles/media.scss' as Media;
 	
 	main {
-		scroll-behavior: smooth;
-
         display: flex;
         flex-direction: column;
         gap: var(--space-line);

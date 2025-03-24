@@ -25,13 +25,24 @@ const seed = Math.ceil(Math.random() * 2);
 		<section class="text-container">
 			<div class="content">
 				<Countdown client:visible />
-				<a 
-					class="button white fade-in" 
+				<div 
+					class="buttons fade-in"
 					style="--animation-delay: 200ms; --animation-duration: 500ms;" 
-					href="./wedding-info"
 				>
-					Wedding details
-				</a>
+
+					<a 
+						class="button white" 
+						href="./wedding-info"
+					>
+						Wedding details
+					</a>
+					<a 
+						class="button white alt" 
+						href="./wedding-info"
+					>
+						Travel info
+					</a>
+				</div>
 			</div>
 		</section>
 	</main>
@@ -109,6 +120,16 @@ const seed = Math.ceil(Math.random() * 2);
 
 			align-self: center;
 			padding: 0 5vw;
+		}
+
+		.buttons {
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-line);
+
+			@include Media.at('medium') {
+				flex-direction: row;
+			}
 		}
 
 		a {

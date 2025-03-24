@@ -22,6 +22,10 @@
         --space-extra-large: 8rem;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     * {
 		/* Foreground, Background */
 		scrollbar-color: #999 #333;
@@ -50,41 +54,58 @@
         gap: var(--space-base);
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2 {
         color: var(--color-green);
         font-family: var(--font-title);
         font-weight: 400;
+        text-transform: capitalize;
         margin: 0;
-        text-transform: uppercase;
     }
-    h4, h5, h6 {
+    h3, h4, h5, h6 {
         font-family: var(--font-body);
         font-weight: 500;
-        text-transform: none;
         line-height: 1.2;
+        margin: 0;
     }
 
     h1 {
-        font-size: 2.5rem;
+        font-size: 2.75rem;
     }
     h2 {
-        font-size: 2rem;
-    }
-    h3 {
         font-size: 1.75rem;
     }
-    h4 {
+    h3 {
         font-size: 1.5rem;
     }
-    h5 {
+    h4 {
         font-size: 1.25rem;
     }
+    h5 {
+        font-size: 1.125rem;
+    }
+    p {
+        &.title {
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        &.tag {
+            font-weight: 600;
+            text-transform: capitalize;
+            font-size: 0.875rem;
+            color: var(--color-green);
+        }
+    }
     a, p {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-family: var(--font-body);
     }
     a {
         --color-link: var(--color-green);
+
+        &.white {
+            --color-link: var(--color-white);
+        }
         cursor: pointer;
         color: var(--color-link);
         text-decoration: none;
@@ -170,15 +191,26 @@
                 --color-text: var(--color-black);
             }
 
+
             display: inline-block;
             
             border: var(--color) 2px solid;
             color: var(--color);
 
-            padding: var(--space-base) var(--space-small) calc(1.2 * var(--space-base));
+            &.alt {
+                border: none;
+                background-color: var(--color);
+                color: var(--color-text);
+            }
+
+            padding: var(--space-tiny) var(--space-line) calc(1.2 * var(--space-tiny));
+            @include Media.at('medium') {
+                padding: var(--space-base) var(--space-small) calc(1.2 * var(--space-base));
+            }
 
             font-family: var(--font-body);
             line-height: 1;
+            text-align: center;
 
             background-color: color-mix(in srgb, transparent 90%, var(--color-black) 5%);
             backdrop-filter: blur(2px);
@@ -187,6 +219,16 @@
             &:hover {
                 background-color: var(--color);
                 color: var(--color-text);
+
+                &.alt {
+                    background-color: var(--color-white);
+                    color: var(--color);
+
+                    &.white {
+                        background-color: var(--color-green);
+                        color: var(--color-white);
+                    }
+                }
             }
 
             transition: all 200ms ease-in-out;
