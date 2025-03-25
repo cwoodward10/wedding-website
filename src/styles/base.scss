@@ -79,6 +79,14 @@
     h5 {
         font-size: 1.25rem;
     }
+    p {
+        max-width: 50em;
+
+        &.legal {
+            font-size: 1rem;
+            font-style: italic;
+        }
+    }
     a, p {
         font-size: 1.25rem;
         font-family: var(--font-body);
