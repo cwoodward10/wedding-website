@@ -84,9 +84,16 @@
         font-size: 1.125rem;
     }
     p {
+        max-width: 50em;
+
         &.title {
             font-weight: 600;
             text-transform: capitalize;
+        }
+        
+        &.legal {
+            font-size: 1rem;
+            font-style: italic;
         }
 
         &.tag {

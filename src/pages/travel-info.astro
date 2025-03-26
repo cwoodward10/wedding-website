@@ -1,0 +1,129 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+type Area = {
+    name: string,
+    tag: string,
+    neighborhoods: Record<string, string>
+}
+const areas: Area[] = [
+    {
+        name: 'Downtown',
+        tag: 'For Sites, Shopping, and Tourism',
+        neighborhoods: {
+            'The Loop': 'The heart of Chicago, known for its iconic architecture and cultural landmarks.',
+            'River North': 'A vibrant area with art galleries, trendy restaurants, and nightlife.',
+            'Streeterville': 'Home to Navy Pier and stunning lakefront views.'
+        }
+    },
+    {
+        name: 'North Side',
+        tag: 'For Upscale Dining and Proximity to Lake',
+        neighborhoods: {
+            'Lakeview': 'A lively neighborhood with bars, restaurants, and the famous Wrigley Field.',
+            'Lincoln Park': 'Offers a mix of quiet streets, fine dining, and nightlife. It also has the beautiful Lincoln Park Zoo.',
+            'Andersonville': 'Known for its diverse community and eclectic mix of shops and eateries.'
+        }
+    },
+    {
+        name: 'Northwest Side',
+        tag: 'For Community and Proximity to Venue',
+        neighborhoods: {
+            'North Center': 'A family-friendly area with parks and local breweries. (Closest to venue!)',
+            'Lincoln Park': 'Quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
+            'Albany Park': 'A culturally rich neighborhood with diverse, and really tasty, dining options. (Where we live now!)'
+        }
+    },
+    {
+        name: 'The West Side',
+        tag: 'For a Mix of Trends and History',
+        neighborhoods: {
+            'West Town': 'A gentrifying area with a mix of historic homes, local shops, and modern amenities.',
+            'Wicker Park': 'Known for its artistic vibe, trendy shops, and vibrant nightlife. (Where we lived before!)',
+            'Logan Square': 'Offers a blend of historic charm and contemporary culture. Hipsters love it here.'
+        }
+    }
+]
+---
+
+<Layout title='Travel Information'>
+    <main>
+        <section class="hero">
+            <h1>Welcome to Chicago!</h1>
+            <p>
+                If you've been before, welcome back! If you haven't been before: welcome, we're 
+                glad you came! But also: What took you so long? 
+            </p>
+            <p>
+                Let this page be your go-to for anything travel and fun related while you're 
+                here with us. We love the city and want you to have a good time. 
+            </p>
+        </section>
+        <section class="toc">
+    
+        </section>
+        <section class="accomodations">
+            <h2>Accomodations</h2>
+            <p>
+                One of our favorite things about Chicago is its many neighborhoods - 
+                each comes with its own unique charm and history. We encourage you to book 
+                accommodations in the neighborhood best interests you. To help you out,
+                we have provided some suggestions below:
+            </p>
+            <div class="neighborhoods">
+                
+            </div>
+            <p class="legal">
+                Please note that we will not be reserving an official hotel block 
+                as our venue is located away from downtown Chicago where most large hotels 
+                are situated.
+            </p>
+        </section>
+
+        <section class="transit">
+            <h2>Transporation</h2>
+            <p>
+                Getting around Chicago is easy! You definitely do not need to rent a car if you don't 
+                want to. Public transit is safe and plentiful. The neighborhoods are all quite walkable.
+            </p>
+            <div>
+                <p class="title">Travel to/from Chicago</p>
+                <p>
+                    We deeply appreciate everyone traveling from near and far to join us on our 
+                    special day. Your effort and presence mean the world to us!
+                </p>
+                <p>
+                    For those flying in, Chicago is served by two major airports: 
+                    O'Hare International Airport (ORD) and Midway International Airport (MDW). 
+                    Both airports are well-connected to the city via public transit, taxis, 
+                    and ride-sharing services.
+                </p>
+                <p>
+                    Please note that starting May 7, 2025, all guests flying will need a 
+                    REAL ID-compliant driver's license or another acceptable form of 
+                    identification (ex. passport) to board domestic flights within the US. 
+                    Make sure to check your ID and upgrade if necessary to avoid any travel issues.
+                </p>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style lang="scss">
+    @use '@styles/media.scss' as Media;
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-line);
+    }
+    .hero {
+        p {
+            max-width: 700px;
+            text-wrap: balance;
+        }
+    }
+    .toc {
+        flex-direction: row;
+    }
+</style>
