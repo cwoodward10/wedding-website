@@ -118,6 +118,15 @@ const areas: Area[] = [
         gap: var(--space-line);
     }
     .hero {
+        @include Media.at('medium') {
+            align-items: center;
+            gap: var(--space-small);
+
+            hgroup {
+                align-items: center;
+            }
+        }
+        
         p {
             max-width: 700px;
             text-wrap: balance;

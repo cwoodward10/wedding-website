@@ -272,24 +272,38 @@ const faqs = [
     .schedule {
         h2 {
             margin-bottom: var(--space-base);
-
-            @include Media.at('medium') {
-                margin-bottom: var(--space-small);
-            }
         }
 
         &>ul {
+            display: grid;
+            gap: var(--space-line);
+            grid-template-columns: min-content 1fr;
+            @include Media.at('medium') {
+                grid-template-columns: min-content minmax(auto, 50em);
+                gap: var(--space-small);
+            }
+            @include Media.at('large') {
+                grid-template-columns: min-content minmax(auto, 50em);
+                gap: var(--space-medium);
+            }
+
             .schedule-item {
+                grid-column: span 2;
                 display: grid;
-                grid-template-columns: min-content 1fr;
-                gap: var(--space-line);
-                
-                @include Media.at('medium') {
-                    grid-template-columns: min-content minmax(auto, 50em);
-                    gap: var(--space-small);
+                grid-template-columns: subgrid;
+
+                .events {
+                    border-bottom: color-mix(in srgb, var(--color-green) 50%, transparent 50%) 1px solid;
+                    
+                    padding-bottom: var(--space-small);
+                    @include Media.at('large') {
+                        padding-bottom: var(--space-medium);
+                    }
                 }
-                @include Media.at('large') {
-                    grid-template-columns: min-content minmax(auto, 50em);
+                &:last-child {
+                    .events {
+                        border-bottom: none;
+                    }
                 }
 
                 .date-container {
@@ -328,9 +342,6 @@ const faqs = [
                 }
 
                 ul.events {
-                    padding-bottom: var(--space-small);
-                    border-bottom: color-mix(in srgb, var(--color-green) 50%, transparent 50%) 1px solid;
-
                     .event {
 
                         position: relative;
