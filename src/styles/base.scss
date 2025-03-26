@@ -11,7 +11,7 @@
 
         --font-title: "Playfair Display SC", serif;
         --font-body: "Playfair", serif;
-        --font-deco: "Petit Formal Script", cursive;
+        --font-deco: "Domine", serif;
 
         --space-tiny: 0.5rem;
         --space-base: 0.625rem;
@@ -113,10 +113,12 @@
         &.white {
             --color-link: var(--color-white);
         }
+
         cursor: pointer;
         color: var(--color-link);
         text-decoration: none;
         font-style: italic;
+        width: fit-content;
         
         &:visited {
             --color-link: color-mix(in srgb, var(--color-green) 80%, var(--color-orange) 20%);
@@ -131,6 +133,21 @@
                     span.inner {
                         display: inline-block;
                         transition: translate 300ms ease-out;
+                    }
+                    &.external span.inner {
+                        display: inline-flex;
+                        align-items: center;
+
+                        &::after {
+                            content: "";
+                            display: inline-block;
+                            background-image: url('../assets/images/external-link.svg');
+                            background-size: contain;
+                            width: auto;
+                            height: 1em;
+                            aspect-ratio: 1 / 1;
+                            margin-left: 0.25em;
+                        }
                     }
                     
                     &::before, &::after {
@@ -163,7 +180,7 @@
                     }
                 }
                 &:not(:has(.inner)) {
-                    &::after {
+                    &::before {
                         content: "";
                         display: block;
                         height: clamp(1px, 0.05rem, 4px);
@@ -175,7 +192,7 @@
                         
                         transition: width 300ms ease-out;
                     }
-                    &::after {
+                    &::before {
                         right: 0;
                         width: 0%;
                     }
@@ -184,6 +201,22 @@
                         &::before, &::after {
                             left: 0;
                             width: 100%;
+                        }
+                    }
+
+                    &.external {
+                        display: inline-flex;
+                        align-items: center;
+                        
+                        &::after {
+                            content: "";
+                            display: inline-block;
+                            background-image: url('../assets/images/external-link.svg');
+                            background-size: contain;
+                            width: auto;
+                            height: 1em;
+                            aspect-ratio: 1 / 1;
+                            margin-left: 0.25em;
                         }
                     }
                 }
@@ -224,21 +257,10 @@
             filter: drop-shadow(2px 3px 4px #4b4b4b1a);
 
             &:hover {
-                background-color: var(--color);
-                color: var(--color-text);
-
-                &.alt {
-                    background-color: var(--color-white);
-                    color: var(--color);
-
-                    &.white {
-                        background-color: var(--color-green);
-                        color: var(--color-white);
-                    }
-                }
+                scale: 1.05;
             }
 
-            transition: all 200ms ease-in-out;
+            transition: scale 200ms ease-in-out;
         }
     }
 

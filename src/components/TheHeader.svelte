@@ -148,23 +148,6 @@
 
     }
 
-    li a.external {
-        .inner {
-            display: inline-flex;
-            align-items: center;
-            
-            &::after {
-                content: "";
-                display: inline-block;
-                background-image: url('../assets/images/external-link.svg');
-                background-size: contain;
-                width: auto;
-                height: 1.5rem;
-                aspect-ratio: 1 / 1;
-                margin-left: 0.25rem;
-            }
-        }
-    }
     &.home li a.external .inner::after {
         filter: brightness(100);
     }

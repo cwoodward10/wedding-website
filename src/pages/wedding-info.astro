@@ -6,7 +6,7 @@ const bbUrl = "https://www.google.com/maps/place/Burning+Bush+Brewery/@41.954643
 
 type event = {
     name: string,
-    details: { [id: string]: string}
+    details: { [id: string]: string | { text: string, url: string}}
 }
 type daily = {
     date: string[],
@@ -21,7 +21,7 @@ const schedule: daily[] = [
                 details: {
                     "Time": "7:00-9:00pm",
                     "Location": "Revolution Brewing - Brewery & Taproom",
-                    "Address": " 3340 N Kedzie Ave, Chicago, IL 60618",
+                    "Address": { text: "3340 N Kedzie Ave, Chicago, IL 60618", url: "https://maps.app.goo.gl/hk4eESr6d2b7GJRF8"},
                     "Dress code": "Casual",
                     "Note": "This is an optional event for anyone who would like to say hi before wedding day! There will be a cash bar and the taproom is bring-your-own-food."
                 }
@@ -36,7 +36,7 @@ const schedule: daily[] = [
                 details: {
                     "Time": "4:00-10:30pm",
                     "Location": "The River Room at Burning Bush Brewery",
-                    "Address": "4014 N Rockwell St, Chicago, IL 60618",
+                    "Address": {text: "4014 N Rockwell St, Chicago, IL 60618", url: "https://maps.app.goo.gl/YtYVciMw5ETdbJaW8"},
                     "Dress Code": "Cocktail attire encouraged"
                 }
             },
@@ -103,7 +103,7 @@ const faqs = [
                 <div class="sub-container">
                     <MapLibre client:load />
                     <a 
-                        class="map-link"
+                        class="map-link external"
                         href={bbUrl}
                         target="_blank"
                     >
@@ -132,7 +132,10 @@ const faqs = [
                                                 Object.keys(event.details).map(k => (
                                                     <li>
                                                         <p class="tag">{k}:</p>
-                                                        <p>{event.details[k]}</p>
+                                                        { typeof event.details[k] === 'string' ? 
+                                                            <p>{event.details[k]}</p>:
+                                                            <a class="external" href={event.details[k].url}>{event.details[k].text}</a>
+                                                        }
                                                     </li>
                                                 ))
                                             }
@@ -278,35 +281,38 @@ const faqs = [
         &>ul {
             .schedule-item {
                 display: grid;
-                grid-template-columns: 80px 1fr;
+                grid-template-columns: min-content 1fr;
                 gap: var(--space-line);
                 
                 @include Media.at('medium') {
-                    grid-template-columns: 100px 1fr;
+                    grid-template-columns: min-content minmax(auto, 50em);
                     gap: var(--space-small);
                 }
                 @include Media.at('large') {
-                    grid-template-columns: 120px 1fr;
+                    grid-template-columns: min-content minmax(auto, 50em);
                 }
 
                 .date-container {
                     background-color: var(--color-green);
-                    border-radius: 0.25rem;
+                    border-radius: 4px;
+
+                    margin-top: var(--space-base);
+                    padding: var(--space-line) calc(1.25 * var(--space-base)) calc(1.25 * var(--space-line));
 
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    gap: var(--space-line);
                     align-items: center;
                     height: fit-content;
-                    aspect-ratio: 5/6;
 
-                    position: sticky;
-                    top: var(--space-base);
-
-                    margin-top: var(--space-base);
-                    padding: var(--space-line);
+                    @include Media.until('medium') {
+                        position: sticky;
+                        top: var(--space-base);
+                    }
 
                     p {
+                        font-family: var(--font-deco);
                         font-weight: 600;
                         font-size: 1.75rem;
                         line-height: 1;
@@ -322,20 +328,27 @@ const faqs = [
                 }
 
                 ul.events {
+                    padding-bottom: var(--space-small);
+                    border-bottom: color-mix(in srgb, var(--color-green) 50%, transparent 50%) 1px solid;
+
                     .event {
+
                         position: relative;
                         gap: var(--space-base);
 
                         h3 {
-                            border-bottom: var(--color-green) 1px solid;
                             width: fit-content;
                             color: var(--color-green);
-                            padding-bottom: 0.25rem;
                         }
                     }
     
                     .details {
                         gap: var(--space-tiny);
+
+                        a {
+                            --color-link: var(--color-black);
+                            font-style: normal;
+                        }
                     }
                 }
             }
