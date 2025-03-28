@@ -1,6 +1,7 @@
 ---
 import MapLibre from '@components/MapLibre.svelte';
 import Layout from '../layouts/Layout.astro';
+import PageTitle from '@components/PageTitle.astro';
 
 const bbUrl = "https://www.google.com/maps/place/Burning+Bush+Brewery/@41.9546433,-87.6961834,17z/data=!3m1!4b1!4m6!3m5!1s0x880fd322b045b45f:0xca598a1b77b88697!8m2!3d41.9546433!4d-87.6936031!16s%2Fg%2F11frs3fg7k?entry=ttu&g_ep=EgoyMDI1MDMxNy4wIKXMDSoASAFQAw%3D%3D";
 
@@ -74,15 +75,16 @@ const faqs = [
 <Layout title='Wedding day'>
 	<main>
 		<section class="hero">
-            <hgroup>
-                <h1>Wedding Weekend</h1>
-                <p>The wheres, whens, and whats that you need to know for our wedding weekend.</p>
-            </hgroup>
-            <div class="buttons">
-                <a href="#venue" class="button">Venue <span class="arrow">↓</span></a>
-                <a href="#schedule" class="button">Schedule <span class="arrow">↓</span></a>
-                <a href="#faq" class="button">F.A.Q <span class="arrow">↓</span></a>
-            </div>
+            <PageTitle 
+                title="Wedding Weekend" 
+                tagline="The wheres, whens, and whats that you need to know for our wedding weekend."
+            >
+                <div class="buttons">
+                    <a href="#venue" class="button">Venue <span class="arrow">↓</span></a>
+                    <a href="#schedule" class="button">Schedule <span class="arrow">↓</span></a>
+                    <a href="#faq" class="button">F.A.Q <span class="arrow">↓</span></a>
+                </div>
+            </PageTitle>
         </section>
 
         <section class="venue">
@@ -165,13 +167,7 @@ const faqs = [
 
 <style lang="scss">
     @use '@styles/media.scss' as Media;
-
-    main {
-        gap: var(--space-large);
-        @include Media.at('medium') {
-            gap: var(--space-extra-large);
-        }
-    }
+    
     section {
         display: flex;
         flex-direction: column;

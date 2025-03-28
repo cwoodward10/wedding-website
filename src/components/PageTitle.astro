@@ -1,0 +1,71 @@
+---
+import FlowersTop from '@assets/images/flowers-login-top.png';
+import FlowersBottom from '@assets/images/flowers-login-bottom.png';
+
+import { Image } from 'astro:assets';
+
+interface Props {
+	title?: string;
+	tagline?: string;
+}
+
+const { 
+    title, 
+    tagline
+} = Astro.props;
+---
+
+<div class="page-title">
+    <Image 
+        class="flowers"  
+        src={FlowersTop} 
+        alt="flowers!"
+        loading="eager"
+    />
+    <hgroup>
+        <h1>{title}</h1>
+        <p>{tagline}</p>
+    </hgroup>
+    <slot></slot>
+</div>
+
+<style lang="scss">
+    @use '@styles/media.scss' as Media;
+
+    .page-title {
+        display: flex;
+        flex-direction: column;
+
+        hgroup {
+            margin-bottom: var(--space-small);
+        }
+
+        @include Media.at('small') {
+            align-items: center;
+    
+            hgroup {
+                align-items: center;
+            }
+        }
+    }
+
+    
+    .flowers {
+        height: auto;
+        width: 75%;
+        display: flex;
+        
+        @include Media.until('small') {
+            display: none;
+            content-visibility: hidden;
+        }
+
+        @include Media.at('medium') {
+            max-width: 300px;
+        }
+    }
+    img {
+        height: auto;
+        max-width: 100vw;
+    }
+</style>

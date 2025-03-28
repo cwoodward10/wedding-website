@@ -34,13 +34,16 @@ const { title, page = 'default' } = Astro.props;
 	main {
         display: flex;
         flex-direction: column;
-        gap: var(--space-line);
+        gap: var(--space-large);
 		
 		margin: auto;
         padding: var(--space-large) var(--space-line);
         
         @include Media.at('medium') {
-            gap: var(--space-small);
+            gap: var(--space-extra-large);
+        }
+        @include Media.at('large') {
+            padding: var(--space-large) var(--space-line);
         }
 
 		section {

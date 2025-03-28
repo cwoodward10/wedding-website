@@ -1,4 +1,5 @@
 ---
+import PageTitle from "@components/PageTitle.astro";
 import Layout from "@layouts/Layout.astro";
 
 type Area = {
@@ -6,7 +7,7 @@ type Area = {
     tag: string,
     neighborhoods: Record<string, string>
 }
-const areas: Area[] = [
+const cityRegions: Area[] = [
     {
         name: 'Downtown',
         tag: 'For Sites, Shopping, and Tourism',
@@ -44,26 +45,41 @@ const areas: Area[] = [
         }
     }
 ]
+
+const recs = [
+    "Architecture River Tour",
+    "Chicago Riverwalk",
+    "Lake Michigan",
+    "Museum District",
+    "The Second City",
+    "Chicago Magic Lounge",
+    "Magnificent Mile",
+    "Lincoln Park Zoo",
+]
 ---
 
 <Layout title='Travel Information'>
     <main>
         <section class="hero">
-            <h1>Welcome to Chicago!</h1>
-            <p>
-                If you've been before, welcome back! If you haven't been before: welcome, we're 
-                glad you came! But also: What took you so long? 
-            </p>
-            <p>
-                Let this page be your go-to for anything travel and fun related while you're 
-                here with us. We love the city and want you to have a good time. 
-            </p>
+            <PageTitle
+                title="Welcome to Chicago!"
+                tagline="If you've been before, welcome back! If you haven't been before: welcome, we're glad you came! But also: What took you so long?"
+            >
+                <div class="buttons mb">
+                    <a href="#accomodations" class="button">Hotels<span class="arrow">↓</span></a>
+                    <a href="#transportation" class="button">Transport<span class="arrow">↓</span></a>
+                    <a href="#recs" class="button">Recs<span class="arrow">↓</span></a>
+                </div>
+                <div class="buttons dk">
+                    <a href="#accomodations" class="button">Accomodations<span class="arrow">↓</span></a>
+                    <a href="#transportation" class="button">Transporation<span class="arrow">↓</span></a>
+                    <a href="#recs" class="button">Recommendations<span class="arrow">↓</span></a>
+                </div>
+            </PageTitle>
         </section>
-        <section class="toc">
-    
-        </section>
-        <section class="accomodations">
-            <h2>Accomodations</h2>
+
+        <section id="accomodations">
+            <h2>Where to stay</h2>
             <p>
                 One of our favorite things about Chicago is its many neighborhoods - 
                 each comes with its own unique charm and history. We encourage you to book 
@@ -71,7 +87,25 @@ const areas: Area[] = [
                 we have provided some suggestions below:
             </p>
             <div class="neighborhoods">
-                
+                {
+                    cityRegions.map(region => (
+                        <div class="city-region">
+                            <h3>{region.name}</h3>
+                            <p class="title">{region.tag}</p>
+
+                            <p>Neighborhoods to look at:</p>
+                            <ul>
+                                {
+                                    Object.keys(region.neighborhoods).map(neighborhood => (
+                                        <li>
+                                            <p><b>{neighborhood}:</b>{region.neighborhoods[neighborhood]}</p>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    ))
+                }
             </div>
             <p class="legal">
                 Please note that we will not be reserving an official hotel block 
@@ -80,31 +114,77 @@ const areas: Area[] = [
             </p>
         </section>
 
-        <section class="transit">
-            <h2>Transporation</h2>
-            <p>
-                Getting around Chicago is easy! You definitely do not need to rent a car if you don't 
-                want to. Public transit is safe and plentiful. The neighborhoods are all quite walkable.
-            </p>
-            <div>
-                <p class="title">Travel to/from Chicago</p>
+        <section id="transporation">
+            <hgroup>
+                <h2>How to get around</h2>
+                <p>
+                    Getting around Chicago is easy! You definitely do not need to rent a car if you don't 
+                    want to. Public transit is safe and plentiful. The neighborhoods are all quite walkable.
+                </p>
+            </hgroup>
+
+            <div class="sub-section">
+                <h3 class="title">Travel to/from Chicago</h3>
                 <p>
                     We deeply appreciate everyone traveling from near and far to join us on our 
                     special day. Your effort and presence mean the world to us!
                 </p>
                 <p>
-                    For those flying in, Chicago is served by two major airports: 
+                    For those flying in Chicago is served by two major airports: 
                     O'Hare International Airport (ORD) and Midway International Airport (MDW). 
                     Both airports are well-connected to the city via public transit, taxis, 
                     and ride-sharing services.
                 </p>
-                <p>
+                <p class="legal">
                     Please note that starting May 7, 2025, all guests flying will need a 
                     REAL ID-compliant driver's license or another acceptable form of 
                     identification (ex. passport) to board domestic flights within the US. 
                     Make sure to check your ID and upgrade if necessary to avoid any travel issues.
                 </p>
             </div>
+
+            <div class="sub-section">
+                <h3 class="title">Wedding day travel</h3>
+                <div>
+                    <p>
+                        <b><em>Taxi/ride-share:</em></b>
+                    </p>
+                    <p>
+                        This is likely the most convenient option for attendees.
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <b><em>Public Transit (CTA)</em></b>
+                    </p>
+                    <ul>
+                        <li><p>
+                            <b>Buses:</b>
+                            Chicago’s buses are safe and run fairly regularly. Taking the bus may be most convenient for those staying along or near Irving Park Ave and Western Ave.
+                        </p></li>
+                        <li><p>
+                            <b>Local Trains (The “El”):</b>
+                            Unfortunately, the River Room is not located near any El stops. While these are great ways to get around the city, they are not the best for our venue.
+                            Your best bet would be to take the Brown or Blue Line to their respective Irving Park stops and transfer to a bus or use a ride-sharing service from there.
+                        </p></li>
+                        <li><p>
+                            <b>Parking:</b>
+                            Street parking is available in the surrounding neighborhood, but we cannot guarantee availability. If you plan to drive, please do not drive home under the influence.
+                        </p></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="recs">
+            <h2>Things to do</h2>
+            <ul>
+                {
+                    recs.map(r => (
+                        <li>{r}</li>
+                    ))
+                }
+            </ul>
         </section>
     </main>
 </Layout>
@@ -117,6 +197,11 @@ const areas: Area[] = [
         flex-direction: column;
         gap: var(--space-line);
     }
+
+    ul {
+        margin: var(--space-tiny) 0;
+    }
+
     .hero {
         @include Media.at('medium') {
             align-items: center;
@@ -125,14 +210,70 @@ const areas: Area[] = [
             hgroup {
                 align-items: center;
             }
+            
+            p {
+                max-width: 40em;
+                text-align: center;
+            }
         }
-        
-        p {
-            max-width: 700px;
-            text-wrap: balance;
+
+
+        .buttons {
+            display: flex;
+            gap: var(--space-line);
+
+            a {
+                width: fit-content;
+                white-space: nowrap;
+            }
+
+            .arrow {
+                display: inline-block;
+                padding-left: var(--space-tiny);
+
+                font-family: sans-serif;
+
+                @include Media.until('small') {
+                    display: none;
+                }
+            }
+
+            @include Media.until('small') {
+                .dk {
+                    display: none;
+                    content-visibility: hidden;
+                }
+            }
+            @include Media.at('small') {
+                .mb {
+                    display: none;
+                    content-visibility: hidden;
+                }
+            }
         }
     }
-    .toc {
-        flex-direction: row;
+
+    section {
+        .sub-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-base);
+        }
+    }
+
+    .neighborhoods {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        @include Media.at('large') {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1fr;
+        }
+
+        .city-region {
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-base);
+        }
     }
 </style>
