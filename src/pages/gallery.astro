@@ -5,6 +5,7 @@ import Icon from "heroicons-astro/Heroicon.astro";
 import { Image, Picture } from 'astro:assets';
 
 import { GalleryContent } from 'src/modules/galleryContent';
+import PageTitle from '@components/PageTitle.astro';
 
 const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec22imz/media/b0jwcoz9-1stygogv/ChrisNatalie_comp.mp4';
 ---
@@ -195,9 +196,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
     </div>
     <main>
         <section>
-            <h1 class="fly-in" style="--animation-delay: 100ms;">
-                Gallery
-            </h1>
+            <PageTitle title="Gallery" />
         </section>
 
         <section class="video-gallery fly-in" style="--animation-duration: 1500ms; --animation-delay: 500ms;">
@@ -250,7 +249,8 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
 
     main {
         --transparent-green: color-mix(in srgb, var(--color-green) 30%, transparent 50%);
-
+        gap: var(--space-line);
+        
         &:has(.lightbox.show) {
             section {
                 pointer-events: none;

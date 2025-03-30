@@ -1,50 +1,8 @@
 ---
+import Accordion from "@components/generic/Accordion.svelte";
 import PageTitle from "@components/PageTitle.astro";
+import TravelAccomodations from "@components/TravelAccomodations.svelte";
 import Layout from "@layouts/Layout.astro";
-
-type Area = {
-    name: string,
-    tag: string,
-    neighborhoods: Record<string, string>
-}
-const cityRegions: Area[] = [
-    {
-        name: 'Downtown',
-        tag: 'For Sites, Shopping, and Tourism',
-        neighborhoods: {
-            'The Loop': 'The heart of Chicago, known for its iconic architecture and cultural landmarks.',
-            'River North': 'A vibrant area with art galleries, trendy restaurants, and nightlife.',
-            'Streeterville': 'Home to Navy Pier and stunning lakefront views.'
-        }
-    },
-    {
-        name: 'North Side',
-        tag: 'For Upscale Dining and Proximity to Lake',
-        neighborhoods: {
-            'Lakeview': 'A lively neighborhood with bars, restaurants, and the famous Wrigley Field.',
-            'Lincoln Park': 'Offers a mix of quiet streets, fine dining, and nightlife. It also has the beautiful Lincoln Park Zoo.',
-            'Andersonville': 'Known for its diverse community and eclectic mix of shops and eateries.'
-        }
-    },
-    {
-        name: 'Northwest Side',
-        tag: 'For Community and Proximity to Venue',
-        neighborhoods: {
-            'North Center': 'A family-friendly area with parks and local breweries. (Closest to venue!)',
-            'Lincoln Park': 'Quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
-            'Albany Park': 'A culturally rich neighborhood with diverse, and really tasty, dining options. (Where we live now!)'
-        }
-    },
-    {
-        name: 'The West Side',
-        tag: 'For a Mix of Trends and History',
-        neighborhoods: {
-            'West Town': 'A gentrifying area with a mix of historic homes, local shops, and modern amenities.',
-            'Wicker Park': 'Known for its artistic vibe, trendy shops, and vibrant nightlife. (Where we lived before!)',
-            'Logan Square': 'Offers a blend of historic charm and contemporary culture. Hipsters love it here.'
-        }
-    }
-]
 
 const recs = [
     "Architecture River Tour",
@@ -80,38 +38,20 @@ const recs = [
 
         <section id="accomodations">
             <h2>Where to stay</h2>
-            <p>
-                One of our favorite things about Chicago is its many neighborhoods - 
-                each comes with its own unique charm and history. We encourage you to book 
-                accommodations in the neighborhood best interests you. To help you out,
-                we have provided some suggestions below:
-            </p>
-            <div class="neighborhoods">
-                {
-                    cityRegions.map(region => (
-                        <div class="city-region">
-                            <h3>{region.name}</h3>
-                            <p class="title">{region.tag}</p>
-
-                            <p>Neighborhoods to look at:</p>
-                            <ul>
-                                {
-                                    Object.keys(region.neighborhoods).map(neighborhood => (
-                                        <li>
-                                            <p><b>{neighborhood}:</b>{region.neighborhoods[neighborhood]}</p>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-                    ))
-                }
+            <div>
+                <p style="margin-bottom: 0.25rem">
+                    One of our favorite things about Chicago is its many neighborhoods - 
+                    each comes with its own unique charm and history. We encourage you to book 
+                    accommodations in the neighborhood best interests you. To help you out,
+                    we have provided some suggestions below:
+                </p>
+                <p class="legal">
+                    Please note that we will not be reserving an official hotel block 
+                    as our venue is located away from downtown Chicago where most large hotels 
+                    are situated.
+                </p>
             </div>
-            <p class="legal">
-                Please note that we will not be reserving an official hotel block 
-                as our venue is located away from downtown Chicago where most large hotels 
-                are situated.
-            </p>
+            <TravelAccomodations client:load />
         </section>
 
         <section id="transporation">
@@ -123,55 +63,61 @@ const recs = [
                 </p>
             </hgroup>
 
-            <div class="sub-section">
-                <h3 class="title">Travel to/from Chicago</h3>
-                <p>
-                    We deeply appreciate everyone traveling from near and far to join us on our 
-                    special day. Your effort and presence mean the world to us!
-                </p>
-                <p>
-                    For those flying in Chicago is served by two major airports: 
-                    O'Hare International Airport (ORD) and Midway International Airport (MDW). 
-                    Both airports are well-connected to the city via public transit, taxis, 
-                    and ride-sharing services.
-                </p>
-                <p class="legal">
-                    Please note that starting May 7, 2025, all guests flying will need a 
-                    REAL ID-compliant driver's license or another acceptable form of 
-                    identification (ex. passport) to board domestic flights within the US. 
-                    Make sure to check your ID and upgrade if necessary to avoid any travel issues.
-                </p>
-            </div>
-
-            <div class="sub-section">
-                <h3 class="title">Wedding day travel</h3>
-                <div>
+            <div class="grid">
+                <div class="sub-section">
+                    <h3 class="title">Travel to/from Chicago</h3>
                     <p>
-                        <b><em>Taxi/ride-share:</em></b>
+                        We deeply appreciate everyone traveling from near and far to join us on our 
+                        special day. Your effort and presence mean the world to us!
                     </p>
                     <p>
-                        This is likely the most convenient option for attendees.
+                        For those flying in Chicago is served by two major airports: 
+                        O'Hare International Airport (ORD) and Midway International Airport (MDW). 
+                        Both airports are well-connected to the city via public transit, taxis, 
+                        and ride-sharing services.
+                    </p>
+                    <p class="legal">
+                        Please note that starting May 7, 2025, all guests flying will need a 
+                        REAL ID-compliant driver's license or another acceptable form of 
+                        identification (ex. passport) to board domestic flights within the US. 
+                        Make sure to check your ID and upgrade if necessary to avoid any travel issues.
                     </p>
                 </div>
-                <div>
-                    <p>
-                        <b><em>Public Transit (CTA)</em></b>
-                    </p>
-                    <ul>
-                        <li><p>
-                            <b>Buses:</b>
-                            Chicago’s buses are safe and run fairly regularly. Taking the bus may be most convenient for those staying along or near Irving Park Ave and Western Ave.
-                        </p></li>
-                        <li><p>
-                            <b>Local Trains (The “El”):</b>
-                            Unfortunately, the River Room is not located near any El stops. While these are great ways to get around the city, they are not the best for our venue.
-                            Your best bet would be to take the Brown or Blue Line to their respective Irving Park stops and transfer to a bus or use a ride-sharing service from there.
-                        </p></li>
-                        <li><p>
-                            <b>Parking:</b>
+
+                <div class="sub-section">
+                    <hgroup>
+                        <h3 class="title">Wedding day travel</h3>
+                        <p>
+                            For more informationa bout the venue and itinerary, 
+                            <a href="./wedding-info#venue">visit here</a>.
+                        </p>
+                    </hgroup>
+                    <div>
+                        <h4>Taxi/ride-share:</h4>
+                        <p>
+                            This is likely the most convenient option for attendees.
+                        </p>
+                    </div>
+                    <div>
+                        <h4>Public Transit (CTA)</h4>
+                        <ul>
+                            <li><p>
+                                <b><em>Buses:</em></b>
+                                Chicago’s buses are safe and run fairly regularly. Taking the bus may be most convenient for those staying along or near Irving Park Ave and Western Ave.
+                            </p></li>
+                            <li><p>
+                                <b><em>Local Trains (The “El”):</em></b>
+                                Unfortunately, the River Room is not located near any El stops. While the train is a great way to get around the city, they are not the best for our venue.
+                                Your best bet would be to take the Brown or Blue Line to their respective Irving Park stops and transfer to a bus or use a ride-sharing service from there.
+                            </p></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Parking:</h4>
+                        <p>
                             Street parking is available in the surrounding neighborhood, but we cannot guarantee availability. If you plan to drive, please do not drive home under the influence.
-                        </p></li>
-                    </ul>
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -196,10 +142,30 @@ const recs = [
         display: flex;
         flex-direction: column;
         gap: var(--space-line);
-    }
 
-    ul {
-        margin: var(--space-tiny) 0;
+        @include Media.at('medium') {
+            gap: var(--space-small);
+        }
+
+        >.grid {
+            --gap: var(--space-line);
+
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+
+            @include Media.at('medium') {
+                --gap: var(--space-small);
+
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            &>*:first-child {
+                padding-right: var(--gap);
+                border-right: var(--color-green) 1px solid;
+            }
+        }
     }
 
     .hero {
@@ -257,23 +223,28 @@ const recs = [
         .sub-section {
             display: flex;
             flex-direction: column;
-            gap: var(--space-base);
-        }
-    }
+            gap: var(--space-line);
 
-    .neighborhoods {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        @include Media.at('large') {
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: 1fr;
-        }
+            h4 {
+                margin-bottom: var(--space-tiny);
+            }
 
-        .city-region {
-            display: flex;
-            flex-direction: column;
-            padding: var(--space-base);
+            &>div {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+
+                h4 {
+                    margin-bottom: 0;
+                }
+            }
+
+            ul {
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-tiny);
+            }
         }
     }
 </style>
