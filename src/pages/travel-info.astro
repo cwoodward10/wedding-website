@@ -1,18 +1,94 @@
 ---
-import Accordion from "@components/generic/Accordion.svelte";
 import PageTitle from "@components/PageTitle.astro";
 import TravelAccomodations from "@components/TravelAccomodations.svelte";
 import Layout from "@layouts/Layout.astro";
 
-const recs = [
-    "Architecture River Tour",
-    "Chicago Riverwalk",
-    "Lake Michigan",
-    "Museum District",
-    "The Second City",
-    "Chicago Magic Lounge",
-    "Magnificent Mile",
-    "Lincoln Park Zoo",
+import cubs from '@assets/images/chi-todo/cubs.jpeg';
+import lakefront from '@assets/images/chi-todo/lakefront.jpeg';
+import park from '@assets/images/chi-todo/park.jpeg';
+import riverwalk from '@assets/images/chi-todo/riverwalk.jpeg';
+import show from '@assets/images/chi-todo/show.jpeg';
+import JumpCards from "@components/generic/JumpCards.astro";
+import Accordion from "@components/generic/Accordion.svelte";
+
+const polaroids: {name: string, src: ImageMetadata}[] = [
+{
+    name: 'Cubs game',
+    src: cubs
+},
+{
+    name: 'Lakefront trail',
+    src: lakefront
+},
+{
+    name: 'Millenium Park',
+    src: park
+},
+{
+    name: 'The Riverwalk',
+    src: riverwalk
+},
+{
+    name: 'Riviera Theatre',
+    src: show
+}
+].sort((a: any, b: any) => Math.random() - Math.random());
+
+type rec = {
+    name: string,
+    neighborhood: string,
+    tag: string
+}
+const attractions: rec[] = [
+    {
+        name: 'Architecture River Tour',
+        neighborhood: 'River North',
+        tag: 'The most worthwhile "tourist attraction" in the city'
+    },
+    {
+        name: 'Chicago Riverwalk',
+        neighborhood: 'River North',
+        tag: 'A vibrant walking path with beautiful views, cafes, and bars'
+    },
+    {
+        name: 'Lake Michigan',
+        neighborhood: 'the entire east side',
+        tag: 'The entire lakefront is a long, public park with a trails, art, and sand beaches.'
+    },
+    {
+        name: 'Museum District',
+        neighborhood: 'Near South Side',
+        tag: 'Check out the aquarium, planetarium, and museum of natural history. The 146 bus will get you there from downtown.'
+    },
+    {
+        name: 'Millenium Park',
+        neighborhood: "The Loop",
+        tag: 'A large park featuring the bean and band shell. Adjacent to Maggie Daley and Grant Parks. The Art Institute is also here.'
+    },
+    {
+        name: 'The Second City',
+        neighborhood: 'Old Town',
+        tag: "The most famous venue of Chicago's vibrant comedy scene. It has skit and improve shows."
+    },
+    {
+        name: 'Chicago Magic Lounge',
+        neighborhood: 'Andersonville',
+        tag: 'Tucked away behind a laundromat, is a wonderful lounge. Get tickets for a show or just show up for a drink and bar magic.'
+    },
+    {
+        name: 'Magnificent Mile',
+        neighborhood: 'River North',
+        tag: "Chicago's famous shopping street. It is always bustling and just steps away from beaches and Navy pier."
+    },
+    {
+        name: 'Lincoln Park Zoo',
+        neighborhood: 'Lincoln Park',
+        tag: "Chicago's free zoo. Come on the right Saturday morning and you'll catch Natalie volunteering here."
+    }
+]
+
+const restaurants: rec[] = [
+    
 ]
 ---
 
@@ -122,15 +198,72 @@ const recs = [
             </div>
         </section>
 
+        <section>
+            <JumpCards cards={polaroids} />
+        </section>
+
         <section id="recs">
-            <h2>Things to do</h2>
-            <ul>
-                {
-                    recs.map(r => (
-                        <li>{r}</li>
-                    ))
-                }
-            </ul>
+            <hgroup>
+                <h2>Things to do</h2>
+                <p>Check out some of our favorite places around the city.</p>
+            </hgroup>
+            <div class="mb grid">
+                <Accordion client:visible title="Attractions" startOpen={true}>
+                    <ul>
+                        {
+                            attractions.map(a => (
+                                <li>
+                                    <p>
+                                        <span class="title">{a.name}</span>
+                                        <span class="tag">({a.neighborhood})</span>
+                                    </p>
+                                    <p>{a.tag}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </Accordion>
+                <Accordion client:visible title="Restaurants/Bars">
+                    <ul>
+                        {
+                            restaurants.map(r => (
+                                <li>
+                                    <p>
+                                        <span class="title">{r.name}</span>
+                                        <span class="tag">({r.neighborhood})</span>
+                                    </p>
+                                    <p>{r.tag}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </Accordion>
+            </div>
+            <div class="dk grid">
+                <ul>
+                    {
+                        attractions.map(a => (
+                            <li>
+                                <p>
+                                    <span class="title">{a.name}</span>
+                                    <span class="tag">({a.neighborhood})</span>
+                                </p>
+                                <p>{a.tag}</p>
+                            </li>
+                        ))
+                    }
+                </ul>
+                <ul>
+                    {
+                        Object.keys(restaurants).map(r => (
+                            <li>
+                                <p class="title"><em>{r}</em></p>
+                                <p>{restaurants[r]}</p>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
         </section>
     </main>
 </Layout>
@@ -159,12 +292,13 @@ const recs = [
 
                 display: grid;
                 grid-template-columns: 1fr 1fr;
+                
+                &>*:first-child {
+                    padding-right: var(--gap);
+                    border-right: var(--color-green) 1px solid;
+                }
             }
 
-            &>*:first-child {
-                padding-right: var(--gap);
-                border-right: var(--color-green) 1px solid;
-            }
         }
     }
 
@@ -245,6 +379,46 @@ const recs = [
                 flex-direction: column;
                 gap: var(--space-tiny);
             }
+        }
+    }
+
+    :global(section:has(.jump-container)) {
+        @include Media.until('small') {
+            display: none;
+            content-visibility: hidden;
+        }
+    }
+    :global(.jump-container .image) {
+        filter: brightness(0.9) grayscale(0.1);
+    }
+
+    #recs {
+        @include Media.until('medium') {
+            .dk {
+                display: none;
+                content-visibility: hidden;
+            }
+        }
+        @include Media.at('medium') {
+            .mb {
+                display: none;
+                content-visibility: hidden;
+            }
+        }
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-line);
+
+            p:last-child {
+                color: color-mix(in srgb, var(--color-black) 80%, var(--color-white) 30%);
+                font-size: 1rem;
+            }
+        } 
+
+        :global(details summary) {
+            font-size: 1.5rem;
+            color: var(--color-green);
         }
     }
 </style>

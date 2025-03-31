@@ -4,11 +4,7 @@
     import WickerPark from '@assets/images/chicago/wickerpark.jpg';
     import QuietYard from '@assets/images/chicago/quietyard.jpg';
 
-
 	import Accordion from './generic/Accordion.svelte';
-
-    import { flip } from 'svelte/animate';
-    import { cubicOut }  from 'svelte/easing';
 
     type Area = {
         name: string,

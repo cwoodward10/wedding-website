@@ -121,10 +121,13 @@
 
         dispatch('click', open);
 
-        (
+
+        if (
             !preventCloseOnClick ||
             (preventCloseOnClick && !isOpen)
-        ) && handleToggle(e);
+        ) {
+            handleToggle(e);
+        }
     }
 
     export function Close() {

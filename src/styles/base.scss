@@ -85,7 +85,8 @@
     }
     p {
         max-width: 50em;
-
+    }
+    p, span {
         &.title {
             font-weight: 600;
             text-transform: capitalize;
