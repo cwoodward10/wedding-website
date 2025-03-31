@@ -81,7 +81,12 @@
             openRegion = index;
         }
     }
+
+    let windowWidth;
+    $: preventCloseOnClick = windowWidth > 739;
 </script>
+
+<svelte:window bind:outerWidth={windowWidth} />
 
 <div class="travel-accomodations">
     <div class="accordions container">
@@ -90,7 +95,7 @@
             bind:this={regionsComponents[i]}
             title={region.name} 
             startOpen={i === 0}
-            preventCloseOnClick={true}
+            {preventCloseOnClick}
             on:click={(e) => handleToggle(e, i)}
         >
             <div class="city-region">

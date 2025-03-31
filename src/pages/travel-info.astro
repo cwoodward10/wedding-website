@@ -51,9 +51,19 @@ const attractions: rec[] = [
         tag: 'A vibrant walking path with beautiful views, cafes, and bars'
     },
     {
+        name: 'Millenium Park',
+        neighborhood: "The Loop",
+        tag: 'A large park featuring the bean and band shell. Adjacent to Maggie Daley and Grant Parks. The Art Institute is also here.'
+    },
+    {
+        name: 'Magnificent Mile',
+        neighborhood: 'River North',
+        tag: "Chicago's famous shopping street. It is always bustling and just steps away from beaches and Navy pier."
+    },
+    {
         name: 'Lake Michigan',
         neighborhood: 'the entire east side',
-        tag: 'The entire lakefront is a long, public park with a trails, art, and sand beaches.'
+        tag: 'The entire lakefront is a long, public park. Rent a bike and ride it. Or, if its nice, check out one of the many sand beaches.'
     },
     {
         name: 'Museum District',
@@ -61,9 +71,9 @@ const attractions: rec[] = [
         tag: 'Check out the aquarium, planetarium, and museum of natural history. The 146 bus will get you there from downtown.'
     },
     {
-        name: 'Millenium Park',
-        neighborhood: "The Loop",
-        tag: 'A large park featuring the bean and band shell. Adjacent to Maggie Daley and Grant Parks. The Art Institute is also here.'
+        name: 'Lincoln Park Zoo',
+        neighborhood: 'Lincoln Park',
+        tag: "Chicago's free zoo. Come on the right Saturday morning and you'll catch Natalie volunteering here."
     },
     {
         name: 'The Second City',
@@ -75,20 +85,84 @@ const attractions: rec[] = [
         neighborhood: 'Andersonville',
         tag: 'Tucked away behind a laundromat, is a wonderful lounge. Get tickets for a show or just show up for a drink and bar magic.'
     },
-    {
-        name: 'Magnificent Mile',
-        neighborhood: 'River North',
-        tag: "Chicago's famous shopping street. It is always bustling and just steps away from beaches and Navy pier."
-    },
-    {
-        name: 'Lincoln Park Zoo',
-        neighborhood: 'Lincoln Park',
-        tag: "Chicago's free zoo. Come on the right Saturday morning and you'll catch Natalie volunteering here."
-    }
 ]
 
 const restaurants: rec[] = [
-    
+    {
+        name: 'Kabobi & Noon O Kabab',
+        neighborhood: 'Albany Park',
+        tag: 'Two neighborhood establishments competing for the title of "Best Persion Food" in the city.'
+    },
+    {
+        name: 'El Fogón de Elena Restaurante',
+        neighborhood: 'Albany Park',
+        tag: 'Small Colombian resturant with good energy and better food.'
+    },
+    {
+        name: 'Taipei Cafe',
+        neighborhood: 'Lakeview',
+        tag: 'A small Taiwanese restaurnt in a bustling part of Lakeview.'
+    },
+    {
+        name: 'Turquoise Cafe & Restaurant',
+        neighborhood: 'Roscoe Village',
+        tag: 'Quiet Turkish restaurant with outdoor seating and great food.'
+    },
+    {
+        name: 'Cafe Tola',
+        neighborhood: 'Multiple locations',
+        tag: "Chris's favorite empanadas in the city."
+    },
+    {
+        name: 'Izakaya Shinya',
+        neighborhood: 'Wicker Park',
+        tag: 'Some of the best Japanese food in the city. Open from 5pm til late.'
+    },
+    {
+        name: 'Bigsuda',
+        neighborhood: 'Wicker Park',
+        tag: 'This is Asian fushion done right. The atmosphere is great as well.'
+    },
+    {
+        name: 'Pasta Palazzo',
+        neighborhood: 'Lincoln Park',
+        tag: 'Casual Italian food with big flavors and big portions.'
+    },
+    {
+        name: 'Macello',
+        neighborhood: 'West Loop',
+        tag: 'Slightly upscale Italian restaurant with great, housemade pasta.'
+    },
+    {
+        name: 'Half Acre',
+        neighborhood: 'Bowmanville',
+        tag: 'Cozy brewery with an outdoor patio and great food.'
+    },
+    {
+        name: 'Off Color Brewing',
+        neighborhood: 'Near North Side',
+        tag: 'Cozy brewery with unique beers. A wonderful Detroi-style pizza place often has a pop-up here as well.'
+    },
+    {
+        name: 'Best Intentions',
+        neighborhood: 'Logan Square',
+        tag: 'Fun atmosphere and $6 smashburgers. What more can you ask for. This part of Armitage Ave is further from transit but has some low-key great bars.'
+    },
+    {
+        name: 'Levain',
+        neighborhood: 'West Loop & River North',
+        tag: "Chris's favorite cookies. It's a NYC establishment but we accept it happily."
+    },
+    {
+        name: 'Magnolia Bakery',
+        neighborhood: 'The Loop',
+        tag: "Natalie's favorite dessert - Magnolia's Banana Pudding - can be found here."
+    },
+    {
+        name: 'Do-rite Donuts',
+        neighborhood: 'Multiple Locations',
+        tag: "Chris's favorite donuts because they do cake donuts oh so well. Get the Valrhona Chocolate one."
+    }
 ]
 ---
 
@@ -127,7 +201,7 @@ const restaurants: rec[] = [
                     are situated.
                 </p>
             </div>
-            <TravelAccomodations client:load />
+            <TravelAccomodations client:only />
         </section>
 
         <section id="transporation">
@@ -205,7 +279,10 @@ const restaurants: rec[] = [
         <section id="recs">
             <hgroup>
                 <h2>Things to do</h2>
-                <p>Check out some of our favorite places around the city.</p>
+                <p>
+                    Check out some of our favorite places around the city. The food & drink recommendations, especially, try to get you out 
+                    of downtown and into the neighborhoods for more under the radar, but still wonderful, locations.
+                </p>
             </hgroup>
             <div class="mb grid">
                 <Accordion client:visible title="Attractions" startOpen={true}>
@@ -255,10 +332,13 @@ const restaurants: rec[] = [
                 </ul>
                 <ul>
                     {
-                        Object.keys(restaurants).map(r => (
+                        restaurants.map(r => (
                             <li>
-                                <p class="title"><em>{r}</em></p>
-                                <p>{restaurants[r]}</p>
+                                <p>
+                                    <span class="title">{r.name}</span>
+                                    <span class="tag">({r.neighborhood})</span> 
+                                </p>
+                                <p>{r.tag}</p>
                             </li>
                         ))
                     }

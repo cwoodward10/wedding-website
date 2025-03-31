@@ -215,19 +215,27 @@
                     display: block;
                     background-image: url('../assets/images/mb-menu-flowers.png');
                     background-size: contain;
+                    background-repeat: no-repeat;
+                    background-origin: padding-box;
 
                     position: absolute;
                     top: 50%;
                     translate: 0 -50%;
-                    width: 100px;
-                    height: 67px;
+                    
+                    --offset: 0.5rem;
+                    width: 60px;
+                    aspect-ratio: 7/4;
+                    @include Media.at('small') {
+                        --offset: 1rem;
+                        width: 100px;
+                    }
                 }
                 &::before {
-                    right: calc(100% + 1rem);
+                    right: calc(100% + var(--offset));
                     transform: scaleX(-1);
                 }
                 &::after {
-                    left: calc(100% + 1rem);
+                    left: calc(100% + var(--offset));
                 }
             }
         }
