@@ -36,6 +36,7 @@ const { cards } = Astro.props;
                     src={c.src} 
                     alt={c.name}
                     width={400}
+                    loading={'eager'}
                 />
                 <p class="title">{c.name}</p>
             </div>
