@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import HamburgerMenu from "./generic/HamburgerMenu.svelte";
+    import HamburgerMenu from "../generic/HamburgerMenu.svelte";
 
     export let page: 'home' | 'default' = 'default';
     const hamburgerColor = page === 'home' ? 'var(--color-white)' : 'var(--color-green)';

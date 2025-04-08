@@ -47,7 +47,7 @@ const schedule: daily[] = [
                     "Time": "10:30pm-12:00am",
                     "Location": "TBD",
                     "Address": "TBD",
-                    "Note": "For anyone who would like to continue the celebration beyond the River Room."
+                    "Note": "For anyone who would like to continue the celebration beyond the River Room!"
                 }
             }
         ]
@@ -55,6 +55,10 @@ const schedule: daily[] = [
 ]
 
 const faqs = [
+{
+        q: "Do I get a plus one?",
+        a: "In order to respect capacity restrictions, we are currently limiting guests to the persons named on your invitation only. Please check your RSVP email for the names of those included in your party."
+    },
     {
         q: 'Are kids allowed?',
         a: 'Our wedding will be an adults-only event. We love the little ones, but kindly ask that you make arrangements for them on this special day.'
@@ -65,7 +69,7 @@ const faqs = [
     },
     {
         q: 'How can I RSVP?',
-        a: 'Please keep an eye on your email inbox for RSVP emails. They will be sent out late spring/early summer.'
+        a: 'Please keep an eye out for your RSVP emails. They will be sent out around June 2025, to the emails that the Save the Dates were sent to.'
         //a: 'Please RSVP by [RSVP Deadline Date] to help us finalize our plans and ensure we can accommodate everyone comfortably.'   
     }
 ]
@@ -77,12 +81,12 @@ const faqs = [
 		<section class="hero">
             <PageTitle 
                 title="Wedding Weekend" 
-                tagline="The wheres, whens, and whats that you need to know for our wedding weekend."
+                tagline="The where's, when's, and what's that you need to know for our wedding&nbsp;weekend."
             >
                 <div class="buttons">
                     <a href="#venue" class="button">Venue <span class="arrow">↓</span></a>
                     <a href="#schedule" class="button">Schedule <span class="arrow">↓</span></a>
-                    <a href="#faq" class="button">F.A.Q <span class="arrow">↓</span></a>
+                    <a href="#faq" class="button">FAQs <span class="arrow">↓</span></a>
                 </div>
             </PageTitle>
         </section>
@@ -92,13 +96,11 @@ const faqs = [
                 <div class="sub-container">
                     <h2 id="venue">The Venue</h2>
                     <p>
-                        The wedding will be held at <b>The River Room</b> at <a href={bbUrl}>Burning Bush Brewery.</a> Located in the 
-                        Norththern neighborhood of North Center, our venue is located about 10 miles east of O'hare International Airport 
-                        and about 8 miles north of The Bean. And it sits directly across the Chicago River from beautiful Horner Park.
+                        Our wedding will be held at <b>The River Room</b> at <a href={bbUrl}>Burning Bush Brewery</a> - located 10 miles east of O'Hare International Airport and 8 miles north of downtown. It sits directly across the Chicago River from beautiful Horner Park.
                     </p>
 
                     <p>
-                        Upon arrival at Burning Bush, follow the signs through the alley to the venue out back. You can also enter through
+                        Upon arrival at Burning Bush, follow the signs through the alley to The River Room out back. You can also enter through
                         the brewery if you're feeling thirsty.
                     </p>
                 </div>
@@ -152,7 +154,7 @@ const faqs = [
         </section>
 
         <section class="faq">
-            <h2 id="faq">F.A.Q.</h2>
+            <h2 id="faq">FAQs</h2>
             <ul>
                 { faqs.map(f => (
                     <li>

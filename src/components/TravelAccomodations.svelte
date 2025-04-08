@@ -51,12 +51,12 @@
             },
             neighborhoods: {
                 'North Center': 'A family-friendly area with parks and local breweries. (Closest to venue!)',
-                'Lincoln Park': 'Quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
+                'Lincoln Square': 'Quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
                 'Albany Park': 'A culturally rich neighborhood with diverse, and really tasty, dining options. (Where we live now!)'
             }
         },
         {
-            name: 'The West Side',
+            name: 'West Side',
             tag: 'A Mix of Trends and History',
             image: {
                 src: WickerPark,
@@ -82,7 +82,7 @@
         }
     }
 
-    let windowWidth;
+    let windowWidth: number;
     $: preventCloseOnClick = windowWidth > 739;
 </script>
 
