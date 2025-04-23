@@ -12,6 +12,7 @@ export default defineConfig({
   adapter: vercel({
     //edgeMiddleware: true,
   }),
+  site: 'https://www.natalieandchris2025.com/',
   security: {
 		checkOrigin: true
 	}

@@ -9,8 +9,7 @@
     onMount(() => {
         const map = new maplibregl.Map({
             container: mapEl,
-            style:
-            mapStyle,
+            style: mapStyle,
             center: [-87.69400686467146, 41.95473253319672],
             zoom: 14,
             attributionControl: false
