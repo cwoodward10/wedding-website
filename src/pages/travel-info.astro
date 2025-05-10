@@ -21,7 +21,7 @@ const polaroids: {name: string, src: ImageMetadata}[] = [
     src: lakefront
 },
 {
-    name: 'Millenium Park',
+    name: 'Millennium Park',
     src: park
 },
 {
@@ -40,6 +40,16 @@ type rec = {
     tag: string
 }
 const attractions: rec[] = [
+{
+        name: 'Millenium Park',
+        neighborhood: "The Loop",
+        tag: 'A large, public park featuring the bean and band shell. Adjacent to Maggie Daley Park, Grant Park, and the art museum.'
+    },
+    {
+        name: 'Chicago Cultural Center',
+        neighborhood: "The Loop",
+        tag: "Perhaps Chris's favorite building in the city. Go see the beautiful mosaics. It often has exhibits too."
+    },
     {
         name: 'Architecture River Tour',
         neighborhood: 'River North',
@@ -51,29 +61,19 @@ const attractions: rec[] = [
         tag: 'A vibrant walking path with cafes, bars, and perhaps the best views in the city.'
     },
     {
-        name: 'Millenium Park',
-        neighborhood: "The Loop",
-        tag: 'A large, public park featuring the bean and band shell. Adjacent to Maggie Daley Park, Grant Park, and the art museum.'
-    },
-    {
-        name: 'Chicago Cultural Center',
-        neighborhood: "The Loop",
-        tag: "Perhaps Chris's favorite building in the city. Go see the beautiful mosaics. It often has exhibits too."
-    },
-    {
         name: 'Magnificent Mile',
         neighborhood: 'River North',
         tag: "Chicago's most famous shopping street. It is always bustling and steps away from both beaches and Navy Pier."
     },
     {
-        name: 'Lake Michigan',
-        neighborhood: 'the entire east side',
-        tag: 'The entire lakefront is a long, public park. Great for walking, biking, and beaching.'
-    },
-    {
         name: 'Museum District',
         neighborhood: 'Near South Side',
         tag: 'Check out the Shedd Aquarium, Adler Planetarium, and/or Field Museum. The 146 bus will get you there from downtown.'
+    },
+    {
+        name: 'Lake Michigan',
+        neighborhood: 'the entire east side',
+        tag: 'The entire lakefront is a long, public park. Great for walking, biking, and beaching.'
     },
     {
         name: 'Lincoln Park Zoo',
@@ -106,7 +106,7 @@ const restaurants: rec[] = [
     {
         name: 'Taipei Cafe',
         neighborhood: 'Lakeview',
-        tag: 'A small Taiwanese restaurnt in a bustling part of Lakeview.'
+        tag: 'A small Taiwanese restaurant in a bustling part of Lakeview.'
     },
     {
         name: 'Turquoise Cafe & Restaurant',
@@ -126,7 +126,7 @@ const restaurants: rec[] = [
     {
         name: 'Bigsuda',
         neighborhood: 'Wicker Park',
-        tag: 'This is Asian fushion done right. The atmosphere is great as well.'
+        tag: 'This is Asian fusion done right. The atmosphere is great as well.'
     },
     {
         name: 'Pasta Palazzo',
@@ -270,7 +270,7 @@ const restaurants: rec[] = [
                             </p></li>
                             <li><p>
                                 <b><em>Local Trains (The “El”):</em></b>
-                                Unfortunately, the River Room is not located near any El stops. While the train is a great way to get around the city, 
+                                Unfortunately, The River Room is not located near any El stops. While the train is a great way to get around the city, 
                                 they are not the best for our venue. Your best bet would be to take the Brown or Blue Line to 
                                 their respective Irving Park stops and transfer to a bus or use a ride-sharing service from there.
                             </p></li>

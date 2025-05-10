@@ -362,6 +362,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
                 &.show {
                     --animation-delay: calc(var(--base-delay, 0) + var(--delay-offset, 0));
                     --animation-duration: 1000ms;
+                    transform-origin: top center;
                     display: flex;
                 }
                 &.show-below-fold {
@@ -394,6 +395,7 @@ const videoUrl = 'https://stj-videos.vidflow.co/studio/o3yfykia/deliverable/oec2
                     min-height: 100%;
                     max-width: none;
                     max-height: none;
+                    object-fit: cover;
 
                     transition: scale 300ms ease-out;
                 }  

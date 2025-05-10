@@ -51,7 +51,7 @@
             },
             neighborhoods: {
                 'North Center': 'A family-friendly area with parks and local breweries. (Closest to venue!)',
-                'Lincoln Square': 'Quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
+                'Lincoln Square': 'A quiet neighborhood featuring charming boutiques, cafes, and a strong sense of community.',
                 'Albany Park': 'A culturally rich neighborhood with diverse, and really tasty, dining options. (Where we live now!)'
             }
         },
