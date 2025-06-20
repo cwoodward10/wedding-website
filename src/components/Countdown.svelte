@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
 
-const countDownDate = new Date("Sep 20, 2025 16:30:00-06:00").getTime();
+const countDownDate = new Date("Sep 20, 2025 16:30:00-05:00").getTime();
 
 let countdown: number;
 
