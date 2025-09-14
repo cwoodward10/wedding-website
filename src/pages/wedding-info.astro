@@ -1,373 +1,397 @@
 ---
-import MapLibre from '@components/MapLibre.svelte';
-import Layout from '../layouts/Layout.astro';
-import PageTitle from '@components/PageTitle.astro';
+import MapLibre from "@components/MapLibre.svelte";
+import Layout from "../layouts/Layout.astro";
+import PageTitle from "@components/PageTitle.astro";
 
-const bbUrl = "https://www.google.com/maps/place/Burning+Bush+Brewery/@41.9546433,-87.6961834,17z/data=!3m1!4b1!4m6!3m5!1s0x880fd322b045b45f:0xca598a1b77b88697!8m2!3d41.9546433!4d-87.6936031!16s%2Fg%2F11frs3fg7k?entry=ttu&g_ep=EgoyMDI1MDMxNy4wIKXMDSoASAFQAw%3D%3D";
+const bbUrl =
+  "https://www.google.com/maps/place/Burning+Bush+Brewery/@41.9546433,-87.6961834,17z/data=!3m1!4b1!4m6!3m5!1s0x880fd322b045b45f:0xca598a1b77b88697!8m2!3d41.9546433!4d-87.6936031!16s%2Fg%2F11frs3fg7k?entry=ttu&g_ep=EgoyMDI1MDMxNy4wIKXMDSoASAFQAw%3D%3D";
 
 type event = {
-    name: string,
-    details: { [id: string]: string | { text: string, url: string}}
-}
+  name: string;
+  details: { [id: string]: string | { text: string; url: string } };
+};
 type daily = {
-    date: string[],
-    events: event[]
-}
+  date: string[];
+  events: event[];
+};
 const schedule: daily[] = [
-    {
-        date: ['Fri', '9/19'],
-        events: [
-            {
-                name: "Friends Meetup at Revolution Brewing",
-                details: {
-                    "Time": "7:00-9:00pm",
-                    "Location": "Revolution Brewing - Brewery & Taproom",
-                    "Address": { text: "3340 N Kedzie Ave, Chicago, IL 60618", url: "https://maps.app.goo.gl/hk4eESr6d2b7GJRF8"},
-                    "Dress code": "Casual",
-                    "Note": "This is an optional event for anyone who would like to say hi before wedding day! There will be a cash bar and the taproom is bring-your-own-food."
-                }
-            }
-        ]
-    },
-    {
-        date: ['Sat', '9/20'],
-        events: [
-            {
-                name: "Wedding Ceremony & Reception",
-                details: {
-                    "Time": "4:30-10:30pm",
-                    "Location": "The River Room at Burning Bush Brewery",
-                    "Address": {text: "4018 N Rockwell St, Chicago, IL 60618", url: "https://maps.app.goo.gl/YtYVciMw5ETdbJaW8"},
-                    "Dress Code": "Cocktail attire encouraged",
-                    "Note": "Please plan to arrive 30 minutes early as the ceremony will begin promptly at 4:30pm."
-                }
-            },
-            {
-                name: "Post-Wedding Celebration",
-                details: {
-                    "Time": "10:30pm-12:00am",
-                    "Location": "TBD",
-                    "Address": "TBD",
-                    "Note": "For anyone who would like to continue the celebration beyond The River Room!"
-                }
-            }
-        ]
-    }
-]
+  {
+    date: ["Fri", "9/19"],
+    events: [
+      {
+        name: "Friends Meetup at Revolution Brewing",
+        details: {
+          Time: "7:00-9:00pm",
+          Location: "Revolution Brewing - Brewery & Taproom",
+          Address: {
+            text: "3340 N Kedzie Ave, Chicago, IL 60618",
+            url: "https://maps.app.goo.gl/hk4eESr6d2b7GJRF8",
+          },
+          "Dress code": "Casual",
+          Note: "This is an optional event for anyone who would like to say hi before wedding day! There will be a cash bar and the taproom is bring-your-own-food.",
+        },
+      },
+    ],
+  },
+  {
+    date: ["Sat", "9/20"],
+    events: [
+      {
+        name: "Wedding Ceremony & Reception",
+        details: {
+          Time: "4:30-10:30pm",
+          Location: "The River Room at Burning Bush Brewery",
+          Address: {
+            text: "4018 N Rockwell St, Chicago, IL 60618",
+            url: "https://maps.app.goo.gl/YtYVciMw5ETdbJaW8",
+          },
+          "Dress Code": "Cocktail attire encouraged",
+          Note: "Please plan to arrive 30 minutes early as the ceremony will begin promptly at 4:30pm.",
+        },
+      },
+      {
+        name: "Post-Wedding Celebration",
+        details: {
+          Time: "10:30pm-12:00am",
+          Location: "The Welcome Back Lounge",
+          Address: {
+            text: "2423 N Milwaukee Ave, Chicago, IL 60647",
+            url: "https://maps.app.goo.gl/bXdS3hrAQ8ueW4K97",
+          },
+          Note: "For anyone who would like to continue the celebration beyond The River Room!",
+        },
+      },
+    ],
+  },
+];
 
 const faqs = [
-{
-        q: "Do I get a plus one?",
-        a: "In order to respect capacity restrictions, we are currently limiting guests to the persons named on your invitation only. Please check your RSVP email for the names of those included in your party."
-    },
-    {
-        q: 'Are kids allowed?',
-        a: 'Our wedding will be an adults-only event. We love the little ones, but kindly ask that you make arrangements for them on this special day.'
-    },
-    {
-        q: 'What is the dress code?',
-        a: 'Cocktail attire is encouraged for the celebration.'
-    },
-    {
-        q: 'How can I RSVP?',
-        a: 'The RSVP emails were sent out June 20th. Please check your spam or promotions folder if you did not receive it.'
-    },
-    {
-        q: 'What is the deadline to RSVPs?',
-        a: 'Please RSVP by end of day August 20th.'
-    }
-]
+  {
+    q: "Do I get a plus one?",
+    a: "In order to respect capacity restrictions, we are currently limiting guests to the persons named on your invitation only. Please check your RSVP email for the names of those included in your party.",
+  },
+  {
+    q: "Are kids allowed?",
+    a: "Our wedding will be an adults-only event. We love the little ones, but kindly ask that you make arrangements for them on this special day.",
+  },
+  {
+    q: "What is the dress code?",
+    a: "Cocktail attire is encouraged for the celebration.",
+  },
+  {
+    q: "How can I RSVP?",
+    a: "The RSVP emails were sent out June 20th. Please check your spam or promotions folder if you did not receive it.",
+  },
+  {
+    q: "What is the deadline to RSVPs?",
+    a: "Please RSVP by end of day August 20th.",
+  },
+];
 ---
 
+<Layout title="Wedding day">
+  <main>
+    <section class="hero">
+      <PageTitle
+        title="Wedding Weekend"
+        tagline="The where's, when's, and what's that you need to know for our wedding weekend."
+      >
+        <div class="buttons">
+          <a href="#venue" class="button">Venue <span class="arrow">↓</span></a>
+          <a href="#schedule" class="button"
+            >Schedule <span class="arrow">↓</span></a
+          >
+          <a href="#faq" class="button">FAQs <span class="arrow">↓</span></a>
+        </div>
+      </PageTitle>
+    </section>
 
-<Layout title='Wedding day'>
-	<main>
-		<section class="hero">
-            <PageTitle 
-                title="Wedding Weekend" 
-                tagline="The where's, when's, and what's that you need to know for our wedding&nbsp;weekend."
-            >
-                <div class="buttons">
-                    <a href="#venue" class="button">Venue <span class="arrow">↓</span></a>
-                    <a href="#schedule" class="button">Schedule <span class="arrow">↓</span></a>
-                    <a href="#faq" class="button">FAQs <span class="arrow">↓</span></a>
-                </div>
-            </PageTitle>
-        </section>
+    <section class="venue">
+      <div class="container">
+        <div class="sub-container">
+          <h2 id="venue">The Venue</h2>
+          <p>
+            Our wedding will be held at <b>The River Room</b> at <a href={bbUrl}
+              >Burning Bush Brewery</a
+            > - located 10 miles east of O'Hare International Airport and 8 miles
+            north of downtown. It sits directly across the Chicago River from beautiful
+            Horner Park.
+          </p>
 
-        <section class="venue">
-            <div class="container">
-                <div class="sub-container">
-                    <h2 id="venue">The Venue</h2>
-                    <p>
-                        Our wedding will be held at <b>The River Room</b> at <a href={bbUrl}>Burning Bush Brewery</a> - located 10 miles east of O'Hare International Airport and 8 miles north of downtown. It sits directly across the Chicago River from beautiful Horner Park.
-                    </p>
+          <p>
+            Upon arrival at Burning Bush, follow the signs through the alley to
+            The River Room out back. You can also enter through the brewery if
+            you're feeling thirsty.
+          </p>
+        </div>
+        <div class="sub-container">
+          <MapLibre client:load />
+          <a class="map-link external" href={bbUrl} target="_blank">
+            Open in maps
+          </a>
+        </div>
+      </div>
+    </section>
 
-                    <p>
-                        Upon arrival at Burning Bush, follow the signs through the alley to The River Room out back. You can also enter through
-                        the brewery if you're feeling thirsty.
-                    </p>
-                </div>
-                <div class="sub-container">
-                    <MapLibre client:load />
-                    <a 
-                        class="map-link external"
-                        href={bbUrl}
-                        target="_blank"
-                    >
-                        Open in maps
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="schedule">
-            <h2 id="schedule">Schedule of events</h2>
-            <ul>
-                {
-                    schedule.map(day => (
-                        <li class="schedule-item">
-                            <div class="date-container">
-                                <p class="day">{day.date[0]}</p>
-                                <p class="date">{day.date[1]}</p>
-                            </div>
-                            <ul class="events">
-                                { day.events.map(event => (
-                                    <li class="event">
-                                        <h3>{event.name}</h3>
-                                        <ul class="details">
-                                            {
-                                                Object.keys(event.details).map(k => (
-                                                    <li>
-                                                        <p class="tag">{k}:</p>
-                                                        { typeof event.details[k] === 'string' ? 
-                                                            <p>{event.details[k]}</p>:
-                                                            <a class="external" href={event.details[k].url}>{event.details[k].text}</a>
-                                                        }
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </li>
-                                ))}
-                            </ul>
+    <section class="schedule">
+      <h2 id="schedule">Schedule of events</h2>
+      <ul>
+        {
+          schedule.map((day) => (
+            <li class="schedule-item">
+              <div class="date-container">
+                <p class="day">{day.date[0]}</p>
+                <p class="date">{day.date[1]}</p>
+              </div>
+              <ul class="events">
+                {day.events.map((event) => (
+                  <li class="event">
+                    <h3>{event.name}</h3>
+                    <ul class="details">
+                      {Object.keys(event.details).map((k) => (
+                        <li>
+                          <p class="tag">{k}:</p>
+                          {typeof event.details[k] === "string" ? (
+                            <p>{event.details[k]}</p>
+                          ) : (
+                            <a
+                              class="external"
+                              href={event.details[k].url}
+                              target="blank"
+                            >
+                              {event.details[k].text}
+                            </a>
+                          )}
                         </li>
-                    ))
-                }
-            </ul>
-        </section>
-
-        <section class="faq">
-            <h2 id="faq">FAQs</h2>
-            <ul>
-                { faqs.map(f => (
-                    <li>
-                        <p class="title">{f.q}</p>
-                        <p>{f.a}</p>
-                    </li>
+                      ))}
+                    </ul>
+                  </li>
                 ))}
-            </ul>
-        </section>
-	</main>
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="faq">
+      <h2 id="faq">FAQs</h2>
+      <ul>
+        {
+          faqs.map((f) => (
+            <li>
+              <p class="title">{f.q}</p>
+              <p>{f.a}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
 </Layout>
 
 <style lang="scss">
-    @use '@styles/media.scss' as Media;
-    
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-line);
+  @use "@styles/media.scss" as Media;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-line);
+  }
+
+  .hero {
+    @include Media.at("medium") {
+      align-items: center;
+      gap: var(--space-small);
+
+      hgroup {
+        align-items: center;
+      }
     }
 
-    .hero {
-        @include Media.at('medium') {
-            align-items: center;
-            gap: var(--space-small);
+    .buttons {
+      display: flex;
+      gap: var(--space-line);
 
-            hgroup {
-                align-items: center;
-            }
+      a {
+        width: fit-content;
+        white-space: nowrap;
+      }
+
+      .arrow {
+        display: inline-block;
+        padding-left: var(--space-tiny);
+
+        font-family: sans-serif;
+
+        @include Media.until("small") {
+          display: none;
+        }
+      }
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-small);
+
+    margin: 0;
+    padding-left: 0;
+
+    li {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .venue {
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-small);
+
+      .sub-container {
+        display: contents;
+      }
+
+      @include Media.until("medium") {
+        #location {
+          order: 0;
+        }
+        :global(.map) {
+          order: 1;
+        }
+        p {
+          order: 2;
+        }
+      }
+
+      @include Media.at("medium") {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        .sub-container {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-line);
+        }
+      }
+
+      p {
+        text-wrap: balance;
+      }
+
+      @include Media.until("small") {
+        a.map-link {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .schedule {
+    h2 {
+      margin-bottom: var(--space-base);
+    }
+
+    & > ul {
+      display: grid;
+      gap: var(--space-line);
+      grid-template-columns: min-content 1fr;
+      @include Media.at("medium") {
+        grid-template-columns: min-content minmax(auto, 50em);
+        gap: var(--space-small);
+      }
+      @include Media.at("large") {
+        grid-template-columns: min-content minmax(auto, 50em);
+        gap: var(--space-medium);
+      }
+
+      .schedule-item {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: subgrid;
+
+        .events {
+          border-bottom: color-mix(
+              in srgb,
+              var(--color-green) 50%,
+              transparent 50%
+            )
+            1px solid;
+
+          padding-bottom: var(--space-small);
+          @include Media.at("large") {
+            padding-bottom: var(--space-medium);
+          }
+        }
+        &:last-child {
+          .events {
+            border-bottom: none;
+          }
         }
 
-        .buttons {
-            display: flex;
-            gap: var(--space-line);
+        .date-container {
+          background-color: var(--color-green);
+          border-radius: 4px;
+
+          margin-top: var(--space-base);
+          padding: var(--space-line) calc(1.25 * var(--space-base))
+            calc(1.25 * var(--space-line));
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: var(--space-line);
+          align-items: center;
+          height: fit-content;
+
+          @include Media.until("medium") {
+            position: sticky;
+            top: var(--space-base);
+          }
+
+          p {
+            font-family: var(--font-deco);
+            font-weight: 600;
+            font-size: 1.75rem;
+            line-height: 1;
+            color: var(--color-white);
+
+            @include Media.at("medium") {
+              font-size: 2rem;
+            }
+            @include Media.at("large") {
+              font-size: 2.5rem;
+            }
+          }
+        }
+
+        ul.events {
+          .event {
+            position: relative;
+            gap: var(--space-base);
+
+            h3 {
+              width: fit-content;
+              color: var(--color-green);
+            }
+          }
+
+          .details {
+            gap: var(--space-tiny);
 
             a {
-                width: fit-content;
-                white-space: nowrap;
+              --color-link: var(--color-black);
+              font-style: normal;
             }
-
-            .arrow {
-                display: inline-block;
-                padding-left: var(--space-tiny);
-
-                font-family: sans-serif;
-
-                @include Media.until('small') {
-                    display: none;
-                }
-            }
+          }
         }
+      }
     }
+  }
 
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-small);
-        
-        margin: 0;
-        padding-left: 0;
-
-        li {
-            display: flex;
-            flex-direction: column;
-        }
-    }
-
-    .venue {
-        .container {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-small);
-
-            .sub-container {
-                display: contents;
-            }
-
-            @include Media.until('medium') {
-                #location {
-                    order: 0;
-                }
-                :global(.map) {
-                    order: 1;
-                }
-                p {
-                    order: 2;
-                }
-            }
-
-            @include Media.at('medium') {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-
-                .sub-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: var(--space-line);
-                }
-            }
-
-            p {
-                text-wrap: balance;
-            }
-
-            @include Media.until('small') {
-                a.map-link {
-                    display: none;
-                }
-            }
-        }
-    }
-
-    .schedule {
-        h2 {
-            margin-bottom: var(--space-base);
-        }
-
-        &>ul {
-            display: grid;
-            gap: var(--space-line);
-            grid-template-columns: min-content 1fr;
-            @include Media.at('medium') {
-                grid-template-columns: min-content minmax(auto, 50em);
-                gap: var(--space-small);
-            }
-            @include Media.at('large') {
-                grid-template-columns: min-content minmax(auto, 50em);
-                gap: var(--space-medium);
-            }
-
-            .schedule-item {
-                grid-column: span 2;
-                display: grid;
-                grid-template-columns: subgrid;
-
-                .events {
-                    border-bottom: color-mix(in srgb, var(--color-green) 50%, transparent 50%) 1px solid;
-                    
-                    padding-bottom: var(--space-small);
-                    @include Media.at('large') {
-                        padding-bottom: var(--space-medium);
-                    }
-                }
-                &:last-child {
-                    .events {
-                        border-bottom: none;
-                    }
-                }
-
-                .date-container {
-                    background-color: var(--color-green);
-                    border-radius: 4px;
-
-                    margin-top: var(--space-base);
-                    padding: var(--space-line) calc(1.25 * var(--space-base)) calc(1.25 * var(--space-line));
-
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    gap: var(--space-line);
-                    align-items: center;
-                    height: fit-content;
-
-                    @include Media.until('medium') {
-                        position: sticky;
-                        top: var(--space-base);
-                    }
-
-                    p {
-                        font-family: var(--font-deco);
-                        font-weight: 600;
-                        font-size: 1.75rem;
-                        line-height: 1;
-                        color: var(--color-white);
-
-                        @include Media.at('medium') {
-                            font-size: 2rem;
-                        }
-                        @include Media.at('large') {
-                            font-size: 2.5rem;
-                        }
-                    }
-                }
-
-                ul.events {
-                    .event {
-
-                        position: relative;
-                        gap: var(--space-base);
-
-                        h3 {
-                            width: fit-content;
-                            color: var(--color-green);
-                        }
-                    }
-    
-                    .details {
-                        gap: var(--space-tiny);
-
-                        a {
-                            --color-link: var(--color-black);
-                            font-style: normal;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .faq {
-    }
+  .faq {
+  }
 </style>
