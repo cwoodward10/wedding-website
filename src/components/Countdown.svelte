@@ -6,10 +6,10 @@ const countDownDate = new Date("Sep 20, 2025 16:30:00-05:00").getTime();
 
 let countdown: number;
 
-const days = writable(0);
-const hours = writable(0)
-const minutes = writable(0);
-const seconds = writable(0);
+const days = writable<number | string>(0);
+const hours = writable<number | string>(0)
+const minutes = writable<number | string>(0);
+const seconds = writable<number | string>(0);
 
 $: counts = [
     {
@@ -37,6 +37,14 @@ const handleCountdown = () => {
     // Find the distance between now and the count down date
     const distance = countDownDate - now;
 
+    if (distance <= 0) {
+        $days = "W";
+        $hours = "O";
+        $minutes = "O";
+        $seconds = "!";
+        return;
+    }
+
     // Time calculations for days, hours, minutes and seconds
     $days = Math.floor(distance / (1000 * 60 * 60 * 24));
     $hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -58,7 +66,9 @@ onMount(() => {
     {#each counts as count}
     <div class="tile">
         <p class="number">{count.value}</p>
+        {#if $days !== "W"}
         <p class="title">{count.title}</p>
+        {/if}
     </div>
     {/each}
 </div>
