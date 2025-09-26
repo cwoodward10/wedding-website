@@ -119,7 +119,7 @@
 
         background-color: transparent;
 
-        .link-menu-container a {
+        a {
             &::before, &::after {
                 background-color: var(--color-white);
             }
